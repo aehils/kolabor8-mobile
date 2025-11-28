@@ -178,7 +178,10 @@ export default function ServiceTile({
           </View>
           
           {/* Text Content */}
-          <View style={styles.textContainer}>
+          <View style={[
+            styles.textContainer,
+            service.type === 'standard' && styles.standardTextContainer,
+          ]}>
             <Text style={[
               styles.name,
               { color: service.type === 'featured' ? palette.neutral[0] : colors.text },
@@ -187,10 +190,9 @@ export default function ServiceTile({
               {service.name}
             </Text>
 
-            {service.type !== 'featured' && (
+            {service.type === 'double-height' && (
               <Text style={[
                 styles.description,
-                service.type === 'featured' && styles.featuredDescription,
               ]} numberOfLines={2}>
                 {service.description}
               </Text>
@@ -279,17 +281,20 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.base,
     flex: 1,
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   featuredContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     padding: spacing.lg,
   },
 
   doubleHeightContent: {
     padding: spacing.lg,
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
   },
   
@@ -319,7 +324,11 @@ const styles = StyleSheet.create({
   
   textContainer: {
   },
-  
+
+  standardTextContainer: {
+    marginTop: 'auto',
+  },
+
   name: {
     fontSize: typography.size.md,
     fontWeight: '600',

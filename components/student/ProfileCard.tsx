@@ -79,7 +79,7 @@ export default function ProfileCard({ student, onExpandQR }: ProfileCardProps) {
           >
             {/* Placeholder QR - in production, use a QR library */}
             <View style={styles.qrPlaceholder}>
-              <Ionicons name="qr-code" size={80} color={palette.neutral[800]} />
+              <Ionicons name="qr-code" size={110} color={palette.neutral[800]} />
             </View>
             <Text style={[styles.qrHint, { color: colors.textSecondary }]}>
               Tap to expand
@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.base,
   },
   cardContainer: {
-    width: 140,
-    height: 140,
+    width: 180,
+    height: 180,
     marginBottom: spacing.base,
   },
   card: {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   initials: {
-    fontSize: 48,
+    fontSize: 64,
     fontWeight: '700',
   },
   qrContainer: {

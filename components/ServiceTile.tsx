@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors, { palette, spacing, borderRadius, shadows, typography } from '@/constants/Colors';
-import { 
-  Service, 
-  ServiceStatus, 
-  capacityConfig, 
-  CapacityStatus, 
-  CountStatus, 
-  HoursStatus 
+import {
+  Service,
+  ServiceStatus,
+  capacityConfig,
+  CapacityStatus,
+  CountStatus,
+  HoursStatus,
+  AvailabilityStatus
 } from '@/constants/Services';
 
 interface ServiceTileProps {
@@ -96,7 +97,7 @@ export default function ServiceTile({
         const isOpen = hoursStatus.isOpen;
         const bgColor = isOpen ? palette.success.light : palette.neutral[150];
         const textColor = isOpen ? palette.success.dark : palette.neutral[600];
-        
+
         return (
           <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
             <Text style={[styles.statusText, { color: textColor }]}>
@@ -105,7 +106,32 @@ export default function ServiceTile({
           </View>
         );
       }
-      
+
+      case 'availability': {
+        const availabilityStatus = status as AvailabilityStatus;
+        const statusValue = availabilityStatus.status;
+
+        let bgColor, textColor;
+        if (statusValue === 'Available') {
+          bgColor = palette.success.light;
+          textColor = palette.success.dark;
+        } else if (statusValue === 'Busy') {
+          bgColor = palette.warning.light;
+          textColor = palette.warning.dark;
+        } else {
+          bgColor = palette.neutral[150];
+          textColor = palette.neutral[600];
+        }
+
+        return (
+          <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
+            <Text style={[styles.statusText, { color: textColor }]}>
+              {statusValue}
+            </Text>
+          </View>
+        );
+      }
+
       default:
         return null;
     }
@@ -168,6 +194,7 @@ export default function ServiceTile({
             styles.iconContainer,
             service.type === 'featured' && styles.featuredIconContainer,
             service.type === 'double-height' && styles.doubleHeightIconContainer,
+            service.type === 'standard' && styles.standardIconContainer,
             { backgroundColor: getIconBgColor() }
           ]}>
             <Ionicons 
@@ -190,7 +217,7 @@ export default function ServiceTile({
               {service.name}
             </Text>
 
-            {service.type === 'double-height' && (
+            {service.id === 'campus-map' && (
               <Text style={[
                 styles.description,
               ]} numberOfLines={2}>
@@ -286,6 +313,7 @@ const styles = StyleSheet.create({
   },
 
   featuredContent: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.lg,
@@ -306,11 +334,15 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
 
+  standardIconContainer: {
+    marginBottom: spacing.lg,
+  },
+
   featuredIconContainer: {
     width: 56,
     height: 56,
     borderRadius: borderRadius.xl,
-    marginBottom: spacing.md,
+    marginRight: spacing.base,
   },
 
   doubleHeightIconContainer: {
@@ -332,6 +364,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: spacing.xs,
     letterSpacing: -0.5,
+    textAlign: 'center',
   },
   
   featuredName: {

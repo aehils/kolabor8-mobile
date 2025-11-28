@@ -66,7 +66,7 @@ const Colors = {
   light: {
     text: palette.neutral[900],
     textSecondary: palette.neutral[500],
-    background: palette.neutral[50],
+    background: palette.neutral[150],
     surface: palette.neutral[0],
     surfaceSecondary: palette.neutral[100],
     tint: palette.primary[500],

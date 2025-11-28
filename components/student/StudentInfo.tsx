@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: typography.size.xs,
-    marginBottom: 2,
+    marginBottom: 4,
   },
   infoValue: {
     fontSize: typography.size.base,

@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
   },
 
   featuredContent: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.lg,
@@ -311,8 +310,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: borderRadius.xl,
-    marginBottom: 0,
-    marginRight: spacing.base,
+    marginBottom: spacing.md,
   },
 
   doubleHeightIconContainer: {
@@ -340,6 +338,7 @@ const styles = StyleSheet.create({
     fontSize: typography.size.lg,
     color: palette.neutral[0],
     fontWeight: '700',
+    textAlign: 'center',
   },
   
   description: {

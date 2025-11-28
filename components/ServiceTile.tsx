@@ -279,18 +279,18 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.base,
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
 
   featuredContent: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     padding: spacing.lg,
   },
 
   doubleHeightContent: {
     padding: spacing.lg,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   
   iconContainer: {
@@ -299,9 +299,9 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.md,
+    marginBottom: 0,
   },
-  
+
   featuredIconContainer: {
     width: 56,
     height: 56,
@@ -309,15 +309,15 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginRight: spacing.base,
   },
-  
+
   doubleHeightIconContainer: {
     width: 56,
     height: 56,
     borderRadius: borderRadius.xl,
+    marginBottom: 0,
   },
   
   textContainer: {
-    flex: 1,
   },
   
   name: {

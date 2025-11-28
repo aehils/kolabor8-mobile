@@ -279,16 +279,18 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.base,
     flex: 1,
+    justifyContent: 'flex-end',
   },
-  
+
   featuredContent: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     padding: spacing.lg,
   },
-  
+
   doubleHeightContent: {
     padding: spacing.lg,
+    justifyContent: 'flex-end',
   },
   
   iconContainer: {

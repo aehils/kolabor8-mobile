@@ -78,7 +78,7 @@ export const services: Service[] = [
   {
     id: SERVICE_IDS.LIBRARY,
     name: 'Library',
-    description: 'Hours, study rooms, catalog',
+    description: 'Book rooms, view catalog, and more',
     icon: 'book',
     type: 'standard',
     hasStatus: true,
@@ -104,14 +104,6 @@ export const services: Service[] = [
     route: '/sports',
   },
   {
-    id: SERVICE_IDS.IT_SERVICES,
-    name: 'IT Services',
-    description: 'Help desk & support',
-    icon: 'laptop-outline',
-    type: 'standard',
-    route: '/it-services',
-  },
-  {
     id: SERVICE_IDS.HEALTH,
     name: 'Health & Wellness',
     description: 'Health services & counseling',
@@ -120,6 +112,14 @@ export const services: Service[] = [
     hasStatus: true,
     statusType: 'hours',
     route: '/health',
+  },
+  {
+    id: SERVICE_IDS.IT_SERVICES,
+    name: 'IT Services',
+    description: 'Help desk & support',
+    icon: 'laptop-outline',
+    type: 'standard',
+    route: '/it-services',
   },
 ];
 

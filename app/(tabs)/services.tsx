@@ -83,9 +83,8 @@ export default function ServicesScreen() {
           />
         }
       >
-        <PageHeader 
-          title="Services" 
-          subtitle="Campus utilities at your fingertips"
+        <PageHeader
+          title="Services"
         />
         
         <View style={styles.tilesContainer}>

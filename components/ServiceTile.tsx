@@ -186,39 +186,49 @@ export default function ServiceTile({
             ]}>
               {service.name}
             </Text>
-            
-            <Text style={[
-              styles.description,
-              service.type === 'featured' && styles.featuredDescription,
-            ]} numberOfLines={2}>
-              {service.description}
-            </Text>
-            
+
+            {service.type !== 'featured' && (
+              <Text style={[
+                styles.description,
+                service.type === 'featured' && styles.featuredDescription,
+              ]} numberOfLines={2}>
+                {service.description}
+              </Text>
+            )}
+
             {renderStatus()}
           </View>
-          
-          {/* Arrow indicator for featured tile */}
-          {service.type === 'featured' && (
-            <View style={styles.arrowContainer}>
-              <Ionicons 
-                name="arrow-forward" 
-                size={20} 
-                color={palette.neutral[0]} 
-              />
-            </View>
-          )}
         </View>
         
         {/* Decorative elements for double-height tile */}
         {service.type === 'double-height' && (
           <View style={styles.mapDecoration}>
+            {/* Horizontal roads */}
+            <View style={[styles.mapRoad, styles.mapRoadHorizontal, { top: 30 }]} />
+            <View style={[styles.mapRoad, styles.mapRoadHorizontal, { top: 80 }]} />
+
+            {/* Vertical roads */}
+            <View style={[styles.mapRoad, styles.mapRoadVertical, { left: '30%' }]} />
+            <View style={[styles.mapRoad, styles.mapRoadVertical, { left: '65%' }]} />
+
+            {/* Building blocks */}
+            <View style={[styles.mapBuilding, { top: 40, left: 20 }]} />
+            <View style={[styles.mapBuilding, { top: 40, right: 20 }]} />
+            <View style={[styles.mapBuilding, { bottom: 30, left: '35%' }]} />
+
+            {/* Location pins */}
+            <View style={[styles.mapPin, { top: 45, left: 30 }]}>
+              <Ionicons name="location-sharp" size={20} color={palette.primary[500]} />
+            </View>
+            <View style={[styles.mapPin, { bottom: 35, right: 30 }]}>
+              <Ionicons name="location-sharp" size={20} color={palette.primary[400]} />
+            </View>
+
+            {/* Grid dots for texture */}
             <View style={styles.mapGrid}>
-              {[...Array(6)].map((_, i) => (
+              {[...Array(12)].map((_, i) => (
                 <View key={i} style={styles.mapDot} />
               ))}
-            </View>
-            <View style={styles.mapPin}>
-              <Ionicons name="location" size={24} color={palette.primary[400]} />
             </View>
           </View>
         )}
@@ -369,30 +379,55 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 100,
+    height: 140,
     overflow: 'hidden',
   },
-  
+
+  mapRoad: {
+    position: 'absolute',
+    backgroundColor: palette.primary[100],
+    opacity: 0.5,
+  },
+
+  mapRoadHorizontal: {
+    left: 0,
+    right: 0,
+    height: 2,
+  },
+
+  mapRoadVertical: {
+    top: 0,
+    bottom: 0,
+    width: 2,
+  },
+
+  mapBuilding: {
+    position: 'absolute',
+    width: 24,
+    height: 24,
+    borderRadius: borderRadius.sm,
+    backgroundColor: palette.primary[200],
+    opacity: 0.4,
+  },
+
   mapGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.base,
+    justifyContent: 'space-around',
+    paddingHorizontal: spacing.base,
+    paddingTop: spacing.sm,
+    opacity: 0.3,
   },
-  
+
   mapDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: palette.primary[100],
-    margin: spacing.sm,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: palette.primary[300],
+    margin: spacing.xs,
   },
-  
+
   mapPin: {
     position: 'absolute',
-    bottom: 20,
-    right: 24,
-    opacity: 0.6,
   },
 });

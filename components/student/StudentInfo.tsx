@@ -92,17 +92,9 @@ export default function StudentInfo({ student }: StudentInfoProps) {
         onPress={handleCopyId}
         actionIcon="copy-outline"
       />
-      
+
       <View style={[styles.divider, { backgroundColor: colors.border }]} />
-      
-      <InfoRow
-        icon="stats-chart-outline"
-        label="GPA"
-        value={student.gpa.toFixed(2)}
-      />
-      
-      <View style={[styles.divider, { backgroundColor: colors.border }]} />
-      
+
       <InfoRow
         icon="mail-outline"
         label="Email"

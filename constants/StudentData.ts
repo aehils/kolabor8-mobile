@@ -75,7 +75,6 @@ export const studentMenuSections: MenuSection[] = [
         label: 'My Modules',
         icon: 'book-outline',
         route: '/student/modules',
-        badge: '6',
       },
       {
         id: 'transcript',

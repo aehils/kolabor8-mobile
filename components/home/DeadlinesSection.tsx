@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   listContainer: {
-    // No padding needed - items have their own padding
+    minHeight: 225, // Fixed height for 3 items
   },
   deadlineItem: {
     flexDirection: 'row',
@@ -346,7 +346,8 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     alignItems: 'center',
-    paddingVertical: spacing['2xl'],
+    justifyContent: 'center',
+    minHeight: 225, // Match list container height
   },
   emptyEmoji: {
     fontSize: 32,

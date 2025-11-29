@@ -38,11 +38,11 @@ function UrgencyBadge({ urgency }: { urgency: UrgencyLevel }) {
   );
 }
 
-function DeadlineItem({ 
-  deadline, 
-  onPress 
-}: { 
-  deadline: Deadline; 
+function DeadlineItem({
+  deadline,
+  onPress
+}: {
+  deadline: Deadline;
   onPress?: () => void;
 }) {
   const colorScheme = useColorScheme() ?? 'light';
@@ -50,13 +50,12 @@ function DeadlineItem({
   const urgency = getDeadlineUrgency(deadline.dueDate);
 
   return (
-    <Pressable 
+    <Pressable
       onPress={onPress}
       style={({ pressed }) => [
         styles.deadlineItem,
-        { 
-          backgroundColor: colors.surface,
-          opacity: pressed ? 0.8 : 1,
+        {
+          opacity: pressed ? 0.7 : 1,
         }
       ]}
     >
@@ -77,18 +76,31 @@ export default function DeadlinesSection({ deadlines, onDeadlinePress }: Deadlin
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const [activeFilter, setActiveFilter] = useState<DeadlineFilter>('7days');
-  
+  const [currentPage, setCurrentPage] = useState(1);
+
   const filteredDeadlines = filterDeadlines(deadlines, activeFilter);
+
+  const ITEMS_PER_PAGE = 3;
+  const totalPages = Math.ceil(filteredDeadlines.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedDeadlines = filteredDeadlines.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filter changes
+  const handleFilterChange = (filter: DeadlineFilter) => {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  };
 
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.titleRow}>
-          <Ionicons 
-            name="clipboard-outline" 
-            size={20} 
-            color={colors.text} 
+          <Ionicons
+            name="clipboard-outline"
+            size={20}
+            color={colors.text}
             style={styles.titleIcon}
           />
           <Text style={[styles.title, { color: colors.text }]}>
@@ -96,16 +108,16 @@ export default function DeadlinesSection({ deadlines, onDeadlinePress }: Deadlin
           </Text>
         </View>
       </View>
-      
+
       {/* Filter Tabs */}
       <View style={[styles.filterContainer, { backgroundColor: colors.surfaceSecondary }]}>
         {FILTER_OPTIONS.map((option) => (
           <Pressable
             key={option.key}
-            onPress={() => setActiveFilter(option.key)}
+            onPress={() => handleFilterChange(option.key)}
             style={[
               styles.filterTab,
-              activeFilter === option.key && { 
+              activeFilter === option.key && {
                 backgroundColor: colors.surface,
                 ...shadows.sm,
               }
@@ -120,9 +132,9 @@ export default function DeadlinesSection({ deadlines, onDeadlinePress }: Deadlin
           </Pressable>
         ))}
       </View>
-      
-      {/* Deadlines List */}
-      <View style={styles.listContainer}>
+
+      {/* Deadlines Window */}
+      <View style={[styles.windowContainer, { backgroundColor: colors.surface }]}>
         {filteredDeadlines.length === 0 ? (
           <View style={styles.emptyState}>
             <Text style={styles.emptyEmoji}>🎉</Text>
@@ -131,13 +143,61 @@ export default function DeadlinesSection({ deadlines, onDeadlinePress }: Deadlin
             </Text>
           </View>
         ) : (
-          filteredDeadlines.map((deadline) => (
-            <DeadlineItem
-              key={deadline.id}
-              deadline={deadline}
-              onPress={() => onDeadlinePress?.(deadline)}
-            />
-          ))
+          <>
+            {/* Deadlines List */}
+            <View style={styles.listContainer}>
+              {paginatedDeadlines.map((deadline, index) => (
+                <View key={deadline.id}>
+                  <DeadlineItem
+                    deadline={deadline}
+                    onPress={() => onDeadlinePress?.(deadline)}
+                  />
+                  {index < paginatedDeadlines.length - 1 && (
+                    <View style={[styles.divider, { backgroundColor: colors.border }]} />
+                  )}
+                </View>
+              ))}
+            </View>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <View style={[styles.paginationContainer, { borderTopColor: colors.border }]}>
+                <Text style={[styles.paginationText, { color: colors.textSecondary }]}>
+                  Showing page {currentPage} of {totalPages}
+                </Text>
+                <View style={styles.paginationButtons}>
+                  <Pressable
+                    onPress={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    style={({ pressed }) => [
+                      styles.paginationButton,
+                      { opacity: pressed ? 0.6 : currentPage === 1 ? 0.3 : 1 }
+                    ]}
+                  >
+                    <Ionicons
+                      name="chevron-back"
+                      size={20}
+                      color={currentPage === 1 ? colors.textSecondary : colors.text}
+                    />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    style={({ pressed }) => [
+                      styles.paginationButton,
+                      { opacity: pressed ? 0.6 : currentPage === totalPages ? 0.3 : 1 }
+                    ]}
+                  >
+                    <Ionicons
+                      name="chevron-forward"
+                      size={20}
+                      color={currentPage === totalPages ? colors.textSecondary : colors.text}
+                    />
+                  </Pressable>
+                </View>
+              </View>
+            )}
+          </>
         )}
       </View>
     </View>
@@ -166,7 +226,7 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     marginHorizontal: spacing.base,
-    marginBottom: spacing.base,
+    marginBottom: spacing.sm,
     padding: spacing.xs,
     borderRadius: borderRadius.lg,
   },
@@ -180,16 +240,19 @@ const styles = StyleSheet.create({
     fontSize: typography.size.sm,
     fontWeight: '500',
   },
+  windowContainer: {
+    marginHorizontal: spacing.base,
+    borderRadius: borderRadius.xl,
+    ...shadows.md,
+    overflow: 'hidden',
+  },
   listContainer: {
-    paddingHorizontal: spacing.base,
+    // No padding needed - items have their own padding
   },
   deadlineItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: spacing.base,
-    marginBottom: spacing.sm,
-    borderRadius: borderRadius.lg,
-    ...shadows.sm,
   },
   deadlineContent: {
     flex: 1,
@@ -214,6 +277,29 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
+  },
+  divider: {
+    height: 1,
+    marginHorizontal: spacing.base,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.sm,
+    borderTopWidth: 1,
+  },
+  paginationText: {
+    fontSize: typography.size.sm,
+    fontWeight: '500',
+  },
+  paginationButtons: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  paginationButton: {
+    padding: spacing.xs,
   },
   emptyState: {
     alignItems: 'center',

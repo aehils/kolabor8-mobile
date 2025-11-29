@@ -21,6 +21,7 @@ import {
   Deadline,
   Module,
   CampusAlert,
+  isEventRemainingToday,
 } from '@/constants/HomeData';
 import {
   CampusAlertBanner,
@@ -112,9 +113,9 @@ export default function HomeScreen() {
         </View>
 
         {/* Up Next Card */}
-        {mockUpNextEvent && (
-          <UpNextCard 
-            event={mockUpNextEvent} 
+        {isEventRemainingToday(mockUpNextEvent) && mockUpNextEvent && (
+          <UpNextCard
+            event={mockUpNextEvent}
             onPress={handleUpNextPress}
           />
         )}

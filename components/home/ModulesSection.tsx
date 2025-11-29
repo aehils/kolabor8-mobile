@@ -41,15 +41,12 @@ function ModuleItem({ module, onPress }: { module: Module; onPress?: () => void 
       onPress={onPress}
       style={({ pressed }) => [
         styles.moduleItem,
-        { 
+        {
           backgroundColor: colors.surface,
           opacity: pressed ? 0.8 : 1,
         }
       ]}
     >
-      {/* Accent Bar */}
-      <View style={[styles.accentBar, { backgroundColor: module.accentColor }]} />
-      
       {/* Content */}
       <View style={styles.moduleContent}>
         <View style={styles.moduleHeader}>
@@ -138,14 +135,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.base,
   },
   moduleItem: {
-    flexDirection: 'row',
     marginBottom: spacing.sm,
     borderRadius: borderRadius.lg,
     overflow: 'hidden',
     ...shadows.sm,
-  },
-  accentBar: {
-    width: 4,
   },
   moduleContent: {
     flex: 1,

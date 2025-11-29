@@ -31,13 +31,9 @@ export default function UpNextCard({ event, onPress }: UpNextCardProps) {
     >
       <View style={styles.header}>
         <View style={[
-          styles.badge, 
+          styles.badge,
           { backgroundColor: ongoing ? palette.success.light : palette.primary[100] }
         ]}>
-          <View style={[
-            styles.badgeDot,
-            { backgroundColor: ongoing ? palette.success.main : palette.primary[500] }
-          ]} />
           <Text style={[
             styles.badgeText,
             { color: ongoing ? palette.success.dark : palette.primary[600] }
@@ -45,10 +41,10 @@ export default function UpNextCard({ event, onPress }: UpNextCardProps) {
             {timeLabel}
           </Text>
         </View>
-        <Ionicons 
-          name="chevron-forward" 
-          size={18} 
-          color={colors.textSecondary} 
+        <Ionicons
+          name="chevron-forward"
+          size={18}
+          color={colors.textSecondary}
         />
       </View>
       
@@ -88,12 +84,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: borderRadius.full,
-  },
-  badgeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginRight: spacing.xs,
   },
   badgeText: {
     fontSize: typography.size.xs,

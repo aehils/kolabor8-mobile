@@ -114,6 +114,17 @@ export function isEventOngoing(event: ScheduleEvent): boolean {
   return now >= event.startTime && now <= event.endTime;
 }
 
+export function isEventRemainingToday(event: ScheduleEvent | null): boolean {
+  if (!event) return false;
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const eventDate = new Date(event.startTime.getFullYear(), event.startTime.getMonth(), event.startTime.getDate());
+
+  // Check if event is today and hasn't ended yet
+  return eventDate.getTime() === today.getTime() && now < event.endTime;
+}
+
 // ============================================
 // Mock Data
 // ============================================

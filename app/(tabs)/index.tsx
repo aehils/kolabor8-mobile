@@ -105,13 +105,6 @@ export default function HomeScreen() {
           />
         )}
 
-        {/* Greeting */}
-        <View style={styles.greetingContainer}>
-          <Text style={[styles.greeting, { color: colors.text }]}>
-            {mockCurrentUser.firstName} {mockCurrentUser.lastName}
-          </Text>
-        </View>
-
         {/* Up Next Card */}
         {isEventRemainingToday(mockUpNextEvent) && mockUpNextEvent && (
           <UpNextCard
@@ -154,17 +147,6 @@ const styles = StyleSheet.create({
 
   scrollContent: {
     paddingBottom: spacing['3xl'],
-  },
-
-  greetingContainer: {
-    paddingHorizontal: spacing.base,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.base,
-  },
-
-  greeting: {
-    fontSize: typography.size['2xl'],
-    fontWeight: '700',
-    letterSpacing: -0.5,
+    paddingTop: spacing.base,
   },
 });

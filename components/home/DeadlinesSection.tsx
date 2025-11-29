@@ -136,12 +136,53 @@ export default function DeadlinesSection({ deadlines, onDeadlinePress }: Deadlin
       {/* Deadlines Window */}
       <View style={[styles.windowContainer, { backgroundColor: colors.surface }]}>
         {filteredDeadlines.length === 0 ? (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyEmoji}>🎉</Text>
-            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
-              No upcoming deadlines
-            </Text>
-          </View>
+          <>
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyEmoji}>🎉</Text>
+              <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
+                No upcoming deadlines
+              </Text>
+            </View>
+            {/* Pagination - Always visible */}
+            <View style={[styles.paginationContainer, {
+              borderTopColor: colors.border,
+              backgroundColor: colors.surfaceSecondary
+            }]}>
+              <Text style={[styles.paginationText, { color: colors.textSecondary }]}>
+                Showing page {currentPage} of {totalPages || 1}
+              </Text>
+              <View style={styles.paginationButtons}>
+                <Pressable
+                  onPress={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1 || totalPages === 0}
+                  style={({ pressed }) => [
+                    styles.paginationButton,
+                    { opacity: pressed ? 0.6 : (currentPage === 1 || totalPages === 0) ? 0.3 : 1 }
+                  ]}
+                >
+                  <Ionicons
+                    name="chevron-back"
+                    size={20}
+                    color={(currentPage === 1 || totalPages === 0) ? colors.textSecondary : colors.text}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  style={({ pressed }) => [
+                    styles.paginationButton,
+                    { opacity: pressed ? 0.6 : (currentPage === totalPages || totalPages === 0) ? 0.3 : 1 }
+                  ]}
+                >
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={(currentPage === totalPages || totalPages === 0) ? colors.textSecondary : colors.text}
+                  />
+                </Pressable>
+              </View>
+            </View>
+          </>
         ) : (
           <>
             {/* Deadlines List */}
@@ -159,44 +200,45 @@ export default function DeadlinesSection({ deadlines, onDeadlinePress }: Deadlin
               ))}
             </View>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <View style={[styles.paginationContainer, { borderTopColor: colors.border }]}>
-                <Text style={[styles.paginationText, { color: colors.textSecondary }]}>
-                  Showing page {currentPage} of {totalPages}
-                </Text>
-                <View style={styles.paginationButtons}>
-                  <Pressable
-                    onPress={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    style={({ pressed }) => [
-                      styles.paginationButton,
-                      { opacity: pressed ? 0.6 : currentPage === 1 ? 0.3 : 1 }
-                    ]}
-                  >
-                    <Ionicons
-                      name="chevron-back"
-                      size={20}
-                      color={currentPage === 1 ? colors.textSecondary : colors.text}
-                    />
-                  </Pressable>
-                  <Pressable
-                    onPress={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages}
-                    style={({ pressed }) => [
-                      styles.paginationButton,
-                      { opacity: pressed ? 0.6 : currentPage === totalPages ? 0.3 : 1 }
-                    ]}
-                  >
-                    <Ionicons
-                      name="chevron-forward"
-                      size={20}
-                      color={currentPage === totalPages ? colors.textSecondary : colors.text}
-                    />
-                  </Pressable>
-                </View>
+            {/* Pagination - Always visible */}
+            <View style={[styles.paginationContainer, {
+              borderTopColor: colors.border,
+              backgroundColor: colors.surfaceSecondary
+            }]}>
+              <Text style={[styles.paginationText, { color: colors.textSecondary }]}>
+                Showing page {currentPage} of {totalPages}
+              </Text>
+              <View style={styles.paginationButtons}>
+                <Pressable
+                  onPress={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  style={({ pressed }) => [
+                    styles.paginationButton,
+                    { opacity: pressed ? 0.6 : currentPage === 1 ? 0.3 : 1 }
+                  ]}
+                >
+                  <Ionicons
+                    name="chevron-back"
+                    size={20}
+                    color={currentPage === 1 ? colors.textSecondary : colors.text}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  style={({ pressed }) => [
+                    styles.paginationButton,
+                    { opacity: pressed ? 0.6 : currentPage === totalPages ? 0.3 : 1 }
+                  ]}
+                >
+                  <Ionicons
+                    name="chevron-forward"
+                    size={20}
+                    color={currentPage === totalPages ? colors.textSecondary : colors.text}
+                  />
+                </Pressable>
               </View>
-            )}
+            </View>
           </>
         )}
       </View>
@@ -287,19 +329,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: spacing.base,
-    paddingVertical: spacing.sm,
-    borderTopWidth: 1,
+    paddingVertical: spacing.base,
+    borderTopWidth: 2,
+    marginTop: spacing.xs,
   },
   paginationText: {
     fontSize: typography.size.sm,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   paginationButtons: {
     flexDirection: 'row',
-    gap: spacing.sm,
+    gap: spacing.base,
   },
   paginationButton: {
-    padding: spacing.xs,
+    padding: spacing.sm,
   },
   emptyState: {
     alignItems: 'center',

@@ -10,7 +10,7 @@ interface WeekTimetableProps {
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const START_HOUR = 8;
-const END_HOUR = 18;
+const END_HOUR = 20;
 const HOUR_WIDTH = 80;
 const ROW_HEIGHT = 60;
 
@@ -146,21 +146,29 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
                 <View key={day} style={styles.dayRow}>
                   {/* Time Cells */}
                   <View style={styles.timeCellsContainer}>
-                    {hours.map((hour) => (
-                      <View
-                        key={hour}
-                        style={[
-                          styles.timeCell,
-                          {
-                            width: HOUR_WIDTH,
-                            height: ROW_HEIGHT,
-                            borderTopColor: colors.border,
-                            borderLeftColor: colors.border,
-                            backgroundColor: currentDay === day ? palette.primary[50] + '20' : colors.surface,
-                          }
-                        ]}
-                      />
-                    ))}
+                    {hours.map((hour) => {
+                      const isOffPeak = hour < 9 || hour >= 17;
+                      const baseColor = currentDay === day ? palette.primary[50] + '20' : colors.surface;
+                      const backgroundColor = isOffPeak
+                        ? (colorScheme === 'dark' ? palette.neutral[800] : palette.neutral[100])
+                        : baseColor;
+
+                      return (
+                        <View
+                          key={hour}
+                          style={[
+                            styles.timeCell,
+                            {
+                              width: HOUR_WIDTH,
+                              height: ROW_HEIGHT,
+                              borderTopColor: colors.border,
+                              borderLeftColor: colors.border,
+                              backgroundColor,
+                            }
+                          ]}
+                        />
+                      );
+                    })}
 
                     {/* Activity Blocks */}
                     {timetable[day]?.map((slot) => {

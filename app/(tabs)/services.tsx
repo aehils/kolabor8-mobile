@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors, { palette, spacing } from '@/constants/Colors';
 import { services, mockServiceStatus, Service, ServiceStatusMap } from '@/constants/Services';
-import PageHeader from '@/components/PageHeader';
 import ServiceTile from '@/components/ServiceTile';
 
 /**
@@ -74,10 +73,6 @@ export default function ServicesScreen() {
           />
         }
       >
-        <PageHeader
-          title="Services"
-        />
-        
         <View style={styles.tilesContainer}>
           {/* Featured Service (Attendance) - Full Width */}
           {featuredService && (

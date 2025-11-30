@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    paddingVertical: spacing['3xl'],
+    paddingTop: spacing['3xl'],
   },
   emptyContent: {
     flex: 1,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   nextContainer: {
     paddingHorizontal: spacing.base,
-    paddingBottom: spacing.lg,
+    paddingBottom: spacing.xs,
     opacity: 0.5,
   },
   nextLabel: {

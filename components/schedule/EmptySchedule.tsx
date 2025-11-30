@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   nextContainer: {
-    paddingHorizontal: spacing.base,
+    paddingHorizontal: spacing['2xl'],
     paddingTop: 250,
     paddingBottom: spacing.xs,
     opacity: 0.5,

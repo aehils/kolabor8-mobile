@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     marginBottom: spacing.lg,
     position: 'absolute',
-    top: '35%',
+    top: '25%',
     left: '50%',
     marginLeft: -24, // Half of width to center
   },

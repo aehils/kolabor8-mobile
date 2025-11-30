@@ -45,39 +45,25 @@ export default function NextActivityCard({
 
   const isInProgress = status === 'in-progress';
   const isUpcomingSoon = !isInProgress && minutesUntil <= 120 && minutesUntil > 0;
-  
-  const accentColor = isInProgress 
-    ? palette.success.main 
-    : isUpcomingSoon 
-      ? palette.warning.main 
-      : palette.primary[500];
 
-  const accentBg = isInProgress
-    ? palette.success.light
+  const accentColor = isInProgress
+    ? palette.success.main
     : isUpcomingSoon
-      ? palette.warning.light
-      : palette.primary[50];
+      ? palette.warning.main
+      : palette.primary[500];
 
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [
         styles.container,
-        { 
+        {
           backgroundColor: colors.surface,
           borderLeftColor: accentColor,
           opacity: pressed ? 0.95 : 1,
         },
-        shadows.lg,
       ]}
     >
-      {/* Status Badge */}
-      <View style={[styles.badge, { backgroundColor: accentBg }]}>
-        <Text style={[styles.badgeText, { color: accentColor }]}>
-          {isInProgress ? 'IN PROGRESS' : 'NEXT UP'}
-        </Text>
-      </View>
-
       {/* Time */}
       <Text style={[styles.time, { color: accentColor }]}>
         {formatTimeRange(activity.startTime, activity.endTime)}
@@ -110,24 +96,40 @@ export default function NextActivityCard({
       {isInProgress ? (
         <View style={styles.progressContainer}>
           <View style={[styles.progressTrack, { backgroundColor: colors.surfaceSecondary }]}>
-            <View 
+            <View
               style={[
-                styles.progressBar, 
-                { 
+                styles.progressBar,
+                {
                   backgroundColor: palette.success.main,
                   width: `${progress}%`,
                 }
-              ]} 
+              ]}
             />
           </View>
-          <Text style={[styles.progressText, { color: palette.success.main }]}>
-            {minutesRemaining} min remaining
-          </Text>
+          <View style={styles.statusRow}>
+            <Text style={[styles.progressText, { color: palette.success.main }]}>
+              {minutesRemaining} min remaining
+            </Text>
+            <Text style={[
+              styles.checkInStatus,
+              { color: activity.checkedIn ? palette.success.main : colors.textSecondary }
+            ]}>
+              {activity.checkedIn ? 'Checked In' : 'Not Checked-In'}
+            </Text>
+          </View>
         </View>
       ) : (
-        <Text style={[styles.countdown, { color: accentColor }]}>
-          {formatCountdown(minutesUntil)}
-        </Text>
+        <View style={styles.statusRow}>
+          <Text style={[styles.countdown, { color: accentColor }]}>
+            {formatCountdown(minutesUntil)}
+          </Text>
+          <Text style={[
+            styles.checkInStatus,
+            { color: activity.checkedIn ? palette.success.main : colors.textSecondary }
+          ]}>
+            {activity.checkedIn ? 'Checked In' : 'Not Checked-In'}
+          </Text>
+        </View>
       )}
 
       {/* Action Buttons */}
@@ -156,23 +158,9 @@ export default function NextActivityCard({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: spacing.base,
     marginBottom: spacing.base,
     padding: spacing.base,
-    borderRadius: borderRadius.xl,
     borderLeftWidth: 4,
-  },
-  badge: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.sm,
-    marginBottom: spacing.sm,
-  },
-  badgeText: {
-    fontSize: typography.size.xs,
-    fontWeight: '700',
-    letterSpacing: 0.5,
   },
   time: {
     fontSize: typography.size.lg,
@@ -210,10 +198,19 @@ const styles = StyleSheet.create({
     fontSize: typography.size.sm,
     fontWeight: '600',
   },
+  statusRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
   countdown: {
     fontSize: typography.size.base,
     fontWeight: '600',
-    marginTop: spacing.sm,
+  },
+  checkInStatus: {
+    fontSize: typography.size.sm,
+    fontWeight: '500',
   },
   actions: {
     flexDirection: 'row',

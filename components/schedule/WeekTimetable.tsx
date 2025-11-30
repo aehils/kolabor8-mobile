@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     bottom: 4,
-    borderRadius: borderRadius.sm,
+    borderRadius: 2,
     padding: spacing.xs,
     overflow: 'hidden',
     borderWidth: 1,

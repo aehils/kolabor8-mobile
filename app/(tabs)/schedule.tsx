@@ -39,6 +39,7 @@ export default function ScheduleScreen() {
   const [showPrevious, setShowPrevious] = useState(false);
   const [timetableModalVisible, setTimetableModalVisible] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState(3); // Week 3 as default
+  const [weekDropdownVisible, setWeekDropdownVisible] = useState(false);
 
   // Get activities for selected date
   const activities = useMemo(() => {
@@ -261,35 +262,26 @@ export default function ScheduleScreen() {
           </View>
 
           {/* Week Selector */}
-          <View style={[styles.weekSelector, { borderBottomColor: colors.border }]}>
-            <Pressable
-              onPress={() => setSelectedWeek(Math.max(1, selectedWeek - 1))}
-              style={styles.weekArrow}
-              disabled={selectedWeek === 1}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={24}
-                color={selectedWeek === 1 ? colors.textSecondary : palette.primary[500]}
-              />
-            </Pressable>
+          <Pressable
+            onPress={() => setWeekDropdownVisible(true)}
+            style={[styles.weekSelector, { borderBottomColor: colors.border }]}
+          >
             <View style={styles.weekLabelContainer}>
-              <Text style={[styles.weekLabel, { color: colors.text }]}>
-                {weekOptions[selectedWeek - 1]?.label || 'Week 1'}
+              <Text style={[styles.weekDateLabel, { color: colors.text }]}>
+                {weekOptions[selectedWeek - 1]?.label.split(': ')[1] || 'October 2, 2025'}
               </Text>
+              <View style={[styles.weekBadge, { backgroundColor: palette.primary[100] }]}>
+                <Text style={[styles.weekBadgeText, { color: palette.primary[700] }]}>
+                  Week {selectedWeek}
+                </Text>
+              </View>
             </View>
-            <Pressable
-              onPress={() => setSelectedWeek(Math.min(12, selectedWeek + 1))}
-              style={styles.weekArrow}
-              disabled={selectedWeek === 12}
-            >
-              <Ionicons
-                name="chevron-forward"
-                size={24}
-                color={selectedWeek === 12 ? colors.textSecondary : palette.primary[500]}
-              />
-            </Pressable>
-          </View>
+            <Ionicons
+              name="chevron-down"
+              size={20}
+              color={colors.textSecondary}
+            />
+          </Pressable>
 
           {/* Week Timetable */}
           <WeekTimetable
@@ -297,6 +289,55 @@ export default function ScheduleScreen() {
             currentDay={currentDayName}
           />
         </SafeAreaView>
+      </Modal>
+
+      {/* Week Dropdown Modal */}
+      <Modal
+        visible={weekDropdownVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setWeekDropdownVisible(false)}
+      >
+        <Pressable
+          style={styles.dropdownOverlay}
+          onPress={() => setWeekDropdownVisible(false)}
+        >
+          <View style={[styles.dropdownContainer, { backgroundColor: colors.surface }]}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {weekOptions.map((option) => (
+                <Pressable
+                  key={option.week}
+                  onPress={() => {
+                    setSelectedWeek(option.week);
+                    setWeekDropdownVisible(false);
+                  }}
+                  style={({ pressed }) => [
+                    styles.dropdownItem,
+                    {
+                      backgroundColor: selectedWeek === option.week
+                        ? palette.primary[50]
+                        : pressed
+                        ? colors.surfaceSecondary
+                        : colors.surface,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.dropdownItemText,
+                      {
+                        color: selectedWeek === option.week ? palette.primary[700] : colors.text,
+                        fontWeight: selectedWeek === option.week ? '600' : '400',
+                      },
+                    ]}
+                  >
+                    {option.label.split(': ')[1]} <Text style={{ fontWeight: '600' }}>[Week {option.week}]</Text>
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </Pressable>
       </Modal>
     </SafeAreaView>
   );
@@ -379,18 +420,46 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
   },
-  weekArrow: {
-    width: 44,
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   weekLabelContainer: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: spacing.sm,
   },
-  weekLabel: {
+  weekDateLabel: {
     fontSize: typography.size.base,
+    fontWeight: '400',
+  },
+  weekBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: borderRadius.sm,
+  },
+  weekBadgeText: {
+    fontSize: typography.size.xs,
     fontWeight: '600',
+  },
+  dropdownOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.base,
+  },
+  dropdownContainer: {
+    width: '100%',
+    maxWidth: 400,
+    maxHeight: '70%',
+    borderRadius: borderRadius.lg,
+    overflow: 'hidden',
+  },
+  dropdownItem: {
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: palette.neutral[100],
+  },
+  dropdownItemText: {
+    fontSize: typography.size.base,
   },
 });

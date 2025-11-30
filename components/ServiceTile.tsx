@@ -349,6 +349,7 @@ const styles = StyleSheet.create({
   featuredDescription: {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: typography.size.base,
+    textAlign: 'left',
   },
 
   statusBadge: {

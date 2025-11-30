@@ -9,13 +9,15 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors, { palette, spacing, borderRadius, shadows, typography } from '@/constants/Colors';
-import { 
-  Service, 
-  ServiceStatus, 
-  capacityConfig, 
-  CapacityStatus, 
-  CountStatus, 
-  HoursStatus 
+import {
+  Service,
+  ServiceStatus,
+  capacityConfig,
+  CapacityStatus,
+  CountStatus,
+  HoursStatus,
+  AvailabilityStatus,
+  SERVICE_IDS
 } from '@/constants/Services';
 
 interface ServiceTileProps {
@@ -65,10 +67,12 @@ export default function ServiceTile({
         const capacityStatus = status as CapacityStatus;
         const config = capacityConfig[capacityStatus.capacity];
         if (!config) return null;
-        
-        const statusColor = palette[config.color]?.main || palette.neutral[500];
+
+        // Use red text for moderate (amber) capacity for better visibility
+        const isModerate = capacityStatus.capacity === 'moderate';
+        const statusColor = isModerate ? palette.error.main : (palette[config.color]?.main || palette.neutral[500]);
         const bgColor = palette[config.color]?.light || palette.neutral[100];
-        
+
         return (
           <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
             <View style={[styles.statusDot, { backgroundColor: statusColor }]} />
@@ -96,11 +100,46 @@ export default function ServiceTile({
         const isOpen = hoursStatus.isOpen;
         const bgColor = isOpen ? palette.success.light : palette.neutral[150];
         const textColor = isOpen ? palette.success.dark : palette.neutral[600];
-        
+
         return (
           <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
             <Text style={[styles.statusText, { color: textColor }]}>
               {isOpen ? `Open until ${hoursStatus.closingTime}` : 'Closed'}
+            </Text>
+          </View>
+        );
+      }
+
+      case 'availability': {
+        const availabilityStatus = status as AvailabilityStatus;
+        const availability = availabilityStatus.availability;
+
+        let bgColor: string;
+        let textColor: string;
+        let label: string;
+
+        switch (availability) {
+          case 'available':
+            bgColor = palette.success.light;
+            textColor = palette.success.dark;
+            label = 'Available';
+            break;
+          case 'busy':
+            bgColor = palette.warning.light;
+            textColor = palette.warning.dark;
+            label = 'Busy';
+            break;
+          case 'closed':
+            bgColor = palette.neutral[150];
+            textColor = palette.neutral[600];
+            label = 'Closed';
+            break;
+        }
+
+        return (
+          <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
+            <Text style={[styles.statusText, { color: textColor }]}>
+              {label}
             </Text>
           </View>
         );
@@ -124,6 +163,15 @@ export default function ServiceTile({
     }
     return palette.primary[50];
   };
+
+  const shouldShowDescription = () => {
+    // Always show description for featured tiles
+    if (service.type === 'featured') return true;
+    // Show description for Campus Map and Sports
+    if (service.id === SERVICE_IDS.CAMPUS_MAP || service.id === SERVICE_IDS.SPORTS) return true;
+    // Hide description for other tiles
+    return false;
+  };
   
   const tileStyles = [
     styles.tile,
@@ -137,7 +185,7 @@ export default function ServiceTile({
   const contentStyles = [
     styles.content,
     service.type === 'featured' && styles.featuredContent,
-    service.type === 'double-height' && styles.doubleHeightContent,
+    service.type === 'standard' && styles.standardContent,
   ];
 
   return (
@@ -167,61 +215,42 @@ export default function ServiceTile({
           <View style={[
             styles.iconContainer,
             service.type === 'featured' && styles.featuredIconContainer,
-            service.type === 'double-height' && styles.doubleHeightIconContainer,
+            service.type === 'standard' && styles.standardIconContainer,
             { backgroundColor: getIconBgColor() }
           ]}>
-            <Ionicons 
-              name={service.icon as any} 
-              size={service.type === 'featured' ? 28 : service.type === 'double-height' ? 32 : 24} 
-              color={getIconColor()} 
+            <Ionicons
+              name={service.icon as any}
+              size={service.type === 'featured' ? 28 : 24}
+              color={getIconColor()}
             />
           </View>
-          
+
           {/* Text Content */}
-          <View style={styles.textContainer}>
+          <View style={[
+            styles.textContainer,
+            service.type === 'standard' && styles.standardTextContainer,
+          ]}>
             <Text style={[
               styles.name,
               { color: service.type === 'featured' ? palette.neutral[0] : colors.text },
               service.type === 'featured' && styles.featuredName,
+              service.type === 'standard' && styles.standardName,
             ]}>
               {service.name}
             </Text>
-            
-            <Text style={[
-              styles.description,
-              service.type === 'featured' && styles.featuredDescription,
-            ]} numberOfLines={2}>
-              {service.description}
-            </Text>
-            
+
+            {shouldShowDescription() && (
+              <Text style={[
+                styles.description,
+                service.type === 'featured' && styles.featuredDescription,
+              ]} numberOfLines={2}>
+                {service.description}
+              </Text>
+            )}
+
             {renderStatus()}
           </View>
-          
-          {/* Arrow indicator for featured tile */}
-          {service.type === 'featured' && (
-            <View style={styles.arrowContainer}>
-              <Ionicons 
-                name="arrow-forward" 
-                size={20} 
-                color={palette.neutral[0]} 
-              />
-            </View>
-          )}
         </View>
-        
-        {/* Decorative elements for double-height tile */}
-        {service.type === 'double-height' && (
-          <View style={styles.mapDecoration}>
-            <View style={styles.mapGrid}>
-              {[...Array(6)].map((_, i) => (
-                <View key={i} style={styles.mapDot} />
-              ))}
-            </View>
-            <View style={styles.mapPin}>
-              <Ionicons name="location" size={24} color={palette.primary[400]} />
-            </View>
-          </View>
-        )}
       </Pressable>
     </Animated.View>
   );
@@ -238,20 +267,10 @@ const styles = StyleSheet.create({
     backgroundColor: palette.primary[500],
     minHeight: 120,
   },
-  
-  doubleHeightTile: {
-    flex: 1,
-    minHeight: 260,
-  },
-  
-  doubleHeightWrapper: {
-    flex: 1,
-    marginRight: spacing.sm,
-  },
-  
+
   standardTile: {
     flex: 1,
-    minHeight: 125,
+    minHeight: 160,
   },
   
   standardTileWrapper: {
@@ -270,15 +289,18 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     flex: 1,
   },
-  
+
   featuredContent: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: spacing.lg,
   },
-  
-  doubleHeightContent: {
-    padding: spacing.lg,
+
+  standardContent: {
+    padding: spacing.base,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   
   iconContainer: {
@@ -289,7 +311,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: spacing.md,
   },
-  
+
   featuredIconContainer: {
     width: 56,
     height: 56,
@@ -297,55 +319,64 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginRight: spacing.base,
   },
-  
-  doubleHeightIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: borderRadius.xl,
+
+  standardIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.lg,
+    marginBottom: spacing.lg,
+    position: 'absolute',
+    top: '25%',
+    left: '50%',
+    marginLeft: -24, // Half of width to center
   },
   
   textContainer: {
     flex: 1,
   },
-  
+
+  standardTextContainer: {
+    position: 'absolute',
+    bottom: spacing.base,
+    left: spacing.base,
+    right: spacing.base,
+    alignItems: 'center',
+  },
+
   name: {
     fontSize: typography.size.md,
     fontWeight: '600',
     marginBottom: spacing.xs,
     letterSpacing: -0.5,
   },
-  
+
   featuredName: {
-    fontSize: typography.size.lg,
+    fontSize: typography.size.xl,
     color: palette.neutral[0],
     fontWeight: '700',
+  },
+
+  standardName: {
+    textAlign: 'center',
   },
   
   description: {
     fontSize: typography.size.sm,
     color: palette.neutral[500],
     lineHeight: typography.size.sm * 1.6,
+    textAlign: 'center',
   },
   
   featuredDescription: {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: typography.size.base,
+    textAlign: 'left',
   },
-  
-  arrowContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: borderRadius.full,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: spacing.md,
-  },
-  
+
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: borderRadius.full,
@@ -362,37 +393,5 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: typography.size.xs,
     fontWeight: '600',
-  },
-  
-  mapDecoration: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    overflow: 'hidden',
-  },
-  
-  mapGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.base,
-  },
-  
-  mapDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: palette.primary[100],
-    margin: spacing.sm,
-  },
-  
-  mapPin: {
-    position: 'absolute',
-    bottom: 20,
-    right: 24,
-    opacity: 0.6,
   },
 });

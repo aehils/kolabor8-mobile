@@ -45,7 +45,8 @@ export const capacityConfig: Record<CapacityLevel, { label: string; color: 'succ
 };
 
 export type ServiceType = 'featured' | 'double-height' | 'standard';
-export type StatusType = 'capacity' | 'count' | 'hours';
+export type StatusType = 'capacity' | 'count' | 'hours' | 'availability';
+export type AvailabilityLevel = 'available' | 'busy' | 'closed';
 
 export interface Service {
   id: ServiceId;
@@ -62,7 +63,7 @@ export const services: Service[] = [
   {
     id: SERVICE_IDS.ATTENDANCE,
     name: 'Attendance Check-in',
-    description: 'Mark your daily attendance',
+    description: 'Mark your attendance',
     icon: 'checkmark-circle',
     type: 'featured',
     route: '/attendance',
@@ -72,7 +73,7 @@ export const services: Service[] = [
     name: 'Campus Map',
     description: 'Navigate the campus',
     icon: 'location',
-    type: 'double-height',
+    type: 'standard',
     route: '/map',
   },
   {
@@ -109,6 +110,8 @@ export const services: Service[] = [
     description: 'Help desk & support',
     icon: 'laptop-outline',
     type: 'standard',
+    hasStatus: true,
+    statusType: 'availability',
     route: '/it-services',
   },
   {
@@ -137,7 +140,11 @@ export interface HoursStatus {
   closingTime?: string;
 }
 
-export type ServiceStatus = CapacityStatus | CountStatus | HoursStatus;
+export interface AvailabilityStatus {
+  availability: AvailabilityLevel;
+}
+
+export type ServiceStatus = CapacityStatus | CountStatus | HoursStatus | AvailabilityStatus;
 
 export type ServiceStatusMap = Partial<Record<ServiceId, ServiceStatus>>;
 
@@ -153,6 +160,9 @@ export const mockServiceStatus: ServiceStatusMap = {
     isOpen: true,
     closingTime: '5:00 PM',
   } as HoursStatus,
+  [SERVICE_IDS.IT_SERVICES]: {
+    availability: 'available',
+  } as AvailabilityStatus,
 };
 
 export default services;

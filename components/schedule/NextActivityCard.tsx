@@ -14,13 +14,11 @@ import {
 
 interface NextActivityCardProps {
   activity: ScheduleActivity;
-  onPress?: () => void;
   onNavigate?: () => void;
 }
 
-export default function NextActivityCard({ 
-  activity, 
-  onPress,
+export default function NextActivityCard({
+  activity,
   onNavigate,
 }: NextActivityCardProps) {
   const colorScheme = useColorScheme() ?? 'light';
@@ -53,14 +51,12 @@ export default function NextActivityCard({
       : palette.primary[500];
 
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [
+    <View
+      style={[
         styles.container,
         {
           backgroundColor: colors.surface,
           borderLeftColor: accentColor,
-          opacity: pressed ? 0.95 : 1,
         },
       ]}
     >
@@ -152,7 +148,7 @@ export default function NextActivityCard({
           </Pressable>
         )}
       </View>
-    </Pressable>
+    </View>
   );
 }
 

@@ -102,14 +102,6 @@ export default function ScheduleScreen() {
     Alert.alert('Date Picker', 'Date picker would open here');
   };
 
-  const handleActivityPress = (activity: ScheduleActivity) => {
-    Alert.alert(
-      `${activity.courseCode} - ${activity.title}`,
-      `${activity.location}\n${activity.instructor?.name || ''}\n\n${activity.notes || 'No notes'}`,
-      [{ text: 'OK' }]
-    );
-  };
-
   const handleNavigate = () => {
     Alert.alert('Navigate', 'Opening campus map...');
   };
@@ -168,7 +160,6 @@ export default function ScheduleScreen() {
                   <ActivityListItem
                     key={activity.id}
                     activity={activity}
-                    onPress={() => handleActivityPress(activity)}
                     showCompleted
                   />
                 ))}
@@ -180,7 +171,6 @@ export default function ScheduleScreen() {
             {nextActivity && (
               <NextActivityCard
                 activity={nextActivity}
-                onPress={() => handleActivityPress(nextActivity)}
                 onNavigate={handleNavigate}
               />
             )}
@@ -192,7 +182,6 @@ export default function ScheduleScreen() {
                   <ActivityListItem
                     key={activity.id}
                     activity={activity}
-                    onPress={() => handleActivityPress(activity)}
                   />
                 ))}
               </View>

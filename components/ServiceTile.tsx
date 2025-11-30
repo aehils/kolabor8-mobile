@@ -16,6 +16,7 @@ import {
   CapacityStatus,
   CountStatus,
   HoursStatus,
+  AvailabilityStatus,
   SERVICE_IDS
 } from '@/constants/Services';
 
@@ -97,21 +98,6 @@ export default function ServiceTile({
       case 'hours': {
         const hoursStatus = status as HoursStatus;
         const isOpen = hoursStatus.isOpen;
-
-        // IT Services shows Available/Busy/Closed instead of hours
-        if (service.id === SERVICE_IDS.IT_SERVICES) {
-          const bgColor = isOpen ? palette.success.light : palette.neutral[150];
-          const textColor = isOpen ? palette.success.dark : palette.neutral[600];
-          return (
-            <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
-              <Text style={[styles.statusText, { color: textColor }]}>
-                {isOpen ? 'Available' : 'Closed'}
-              </Text>
-            </View>
-          );
-        }
-
-        // Other services show hours
         const bgColor = isOpen ? palette.success.light : palette.neutral[150];
         const textColor = isOpen ? palette.success.dark : palette.neutral[600];
 
@@ -119,6 +105,41 @@ export default function ServiceTile({
           <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
             <Text style={[styles.statusText, { color: textColor }]}>
               {isOpen ? `Open until ${hoursStatus.closingTime}` : 'Closed'}
+            </Text>
+          </View>
+        );
+      }
+
+      case 'availability': {
+        const availabilityStatus = status as AvailabilityStatus;
+        const availability = availabilityStatus.availability;
+
+        let bgColor: string;
+        let textColor: string;
+        let label: string;
+
+        switch (availability) {
+          case 'available':
+            bgColor = palette.success.light;
+            textColor = palette.success.dark;
+            label = 'Available';
+            break;
+          case 'busy':
+            bgColor = palette.warning.light;
+            textColor = palette.warning.dark;
+            label = 'Busy';
+            break;
+          case 'closed':
+            bgColor = palette.neutral[150];
+            textColor = palette.neutral[600];
+            label = 'Closed';
+            break;
+        }
+
+        return (
+          <View style={[styles.statusBadge, { backgroundColor: bgColor }]}>
+            <Text style={[styles.statusText, { color: textColor }]}>
+              {label}
             </Text>
           </View>
         );

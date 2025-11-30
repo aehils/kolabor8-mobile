@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
   
   tilesContainer: {
     paddingHorizontal: spacing.base,
+    paddingTop: spacing.lg,
   },
   
   featuredRow: {

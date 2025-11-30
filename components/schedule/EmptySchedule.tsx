@@ -18,13 +18,15 @@ export default function EmptySchedule({
 
   return (
     <View style={styles.container}>
-      <View style={[styles.iconContainer, { backgroundColor: palette.primary[50] }]}>
-        <Ionicons name="calendar-outline" size={48} color={palette.primary[500]} />
+      <View style={styles.emptyContent}>
+        <View style={[styles.iconContainer, { backgroundColor: palette.primary[50] }]}>
+          <Ionicons name="calendar-outline" size={48} color={palette.primary[500]} />
+        </View>
+
+        <Text style={[styles.title, { color: colors.text }]}>
+          No activities scheduled today
+        </Text>
       </View>
-      
-      <Text style={[styles.title, { color: colors.text }]}>
-        No activities scheduled today
-      </Text>
 
       {nextActivity && nextActivityDate && (
         <View style={styles.nextContainer}>
@@ -49,10 +51,14 @@ export default function EmptySchedule({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between',
+    paddingTop: spacing['3xl'],
+  },
+  emptyContent: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing['2xl'],
-    paddingVertical: spacing['3xl'],
   },
   iconContainer: {
     width: 96,
@@ -65,11 +71,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.size.lg,
     fontWeight: '600',
-    marginBottom: spacing.lg,
     textAlign: 'center',
   },
   nextContainer: {
-    alignItems: 'center',
+    paddingHorizontal: spacing['2xl'],
+    paddingTop: 250,
+    paddingBottom: spacing.xs,
+    opacity: 0.5,
   },
   nextLabel: {
     fontSize: typography.size.sm,
@@ -83,7 +91,6 @@ const styles = StyleSheet.create({
   nextTitle: {
     fontSize: typography.size.base,
     marginBottom: spacing.xs,
-    textAlign: 'center',
   },
   nextLocation: {
     fontSize: typography.size.sm,

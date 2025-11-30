@@ -6,13 +6,11 @@ import { ScheduleActivity, formatTimeRange, getActivityStatus } from '@/constant
 
 interface ActivityListItemProps {
   activity: ScheduleActivity;
-  onPress?: () => void;
   showCompleted?: boolean;
 }
 
-export default function ActivityListItem({ 
-  activity, 
-  onPress,
+export default function ActivityListItem({
+  activity,
   showCompleted = false,
 }: ActivityListItemProps) {
   const colorScheme = useColorScheme() ?? 'light';
@@ -25,13 +23,12 @@ export default function ActivityListItem({
   if (isCompleted && !showCompleted) return null;
 
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [
+    <View
+      style={[
         styles.container,
-        { 
+        {
           backgroundColor: colors.surface,
-          opacity: isCompleted ? 0.6 : pressed ? 0.9 : 1,
+          opacity: isCompleted ? 0.6 : 1,
         },
         shadows.sm,
       ]}
@@ -81,9 +78,7 @@ export default function ActivityListItem({
           </Text>
         </View>
       </View>
-
-      <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
-    </Pressable>
+    </View>
   );
 }
 

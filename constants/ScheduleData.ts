@@ -32,6 +32,7 @@ export interface ScheduleActivity {
   isVirtual?: boolean;
   meetingLink?: string;
   status: ActivityStatus;
+  checkedIn?: boolean;
 }
 
 export interface DaySchedule {
@@ -187,6 +188,7 @@ export const mockTodayActivities: ScheduleActivity[] = [
     room: 'Room 204',
     instructor: mockInstructors.smith,
     status: 'upcoming',
+    checkedIn: false,
   },
   {
     id: 'act-2',
@@ -201,6 +203,7 @@ export const mockTodayActivities: ScheduleActivity[] = [
     room: 'Room 101',
     instructor: mockInstructors.johnson,
     status: 'upcoming',
+    checkedIn: true,
   },
   {
     id: 'act-3',

@@ -34,10 +34,12 @@ import {
 export default function ScheduleScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
-  
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPrevious, setShowPrevious] = useState(false);
   const [timetableModalVisible, setTimetableModalVisible] = useState(false);
+  const [selectedWeek, setSelectedWeek] = useState(3); // Week 3 as default
+  const [weekDropdownVisible, setWeekDropdownVisible] = useState(false);
 
   // Get activities for selected date
   const activities = useMemo(() => {
@@ -102,14 +104,6 @@ export default function ScheduleScreen() {
     Alert.alert('Date Picker', 'Date picker would open here');
   };
 
-  const handleActivityPress = (activity: ScheduleActivity) => {
-    Alert.alert(
-      `${activity.courseCode} - ${activity.title}`,
-      `${activity.location}\n${activity.instructor?.name || ''}\n\n${activity.notes || 'No notes'}`,
-      [{ text: 'OK' }]
-    );
-  };
-
   const handleNavigate = () => {
     Alert.alert('Navigate', 'Opening campus map...');
   };
@@ -122,6 +116,23 @@ export default function ScheduleScreen() {
   // Get current day for timetable highlight
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const currentDayName = dayNames[new Date().getDay()];
+
+  // Generate week options (e.g., Week 1 through Week 12)
+  const weekOptions = Array.from({ length: 12 }, (_, i) => {
+    const weekNumber = i + 1;
+    // Calculate the start date for each week (for demo purposes)
+    const startDate = new Date(2025, 9, 2); // October 2, 2025
+    startDate.setDate(startDate.getDate() + (i * 7));
+    const dateString = startDate.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+    return {
+      week: weekNumber,
+      label: `Week ${weekNumber}: ${dateString}`,
+    };
+  });
 
   return (
     <SafeAreaView 
@@ -168,7 +179,6 @@ export default function ScheduleScreen() {
                   <ActivityListItem
                     key={activity.id}
                     activity={activity}
-                    onPress={() => handleActivityPress(activity)}
                     showCompleted
                   />
                 ))}
@@ -180,7 +190,6 @@ export default function ScheduleScreen() {
             {nextActivity && (
               <NextActivityCard
                 activity={nextActivity}
-                onPress={() => handleActivityPress(nextActivity)}
                 onNavigate={handleNavigate}
               />
             )}
@@ -192,7 +201,6 @@ export default function ScheduleScreen() {
                   <ActivityListItem
                     key={activity.id}
                     activity={activity}
-                    onPress={() => handleActivityPress(activity)}
                   />
                 ))}
               </View>
@@ -216,12 +224,12 @@ export default function ScheduleScreen() {
           onPress={() => setTimetableModalVisible(true)}
           style={({ pressed }) => [
             styles.timetableButton,
-            { 
+            {
               backgroundColor: colors.surface,
-              borderColor: colors.border,
+              borderColor: palette.primary[500],
               opacity: pressed ? 0.9 : 1,
             },
-            shadows.sm,
+            shadows.lg,
           ]}
         >
           <Ionicons name="calendar" size={20} color={palette.primary[500]} />
@@ -253,12 +261,83 @@ export default function ScheduleScreen() {
             <View style={styles.modalBackButton} />
           </View>
 
+          {/* Week Selector */}
+          <Pressable
+            onPress={() => setWeekDropdownVisible(true)}
+            style={[styles.weekSelector, { borderBottomColor: colors.border }]}
+          >
+            <View style={styles.weekLabelContainer}>
+              <Text style={[styles.weekDateLabel, { color: colors.text }]}>
+                {weekOptions[selectedWeek - 1]?.label.split(': ')[1] || 'October 2, 2025'}
+              </Text>
+              <View style={[styles.weekBadge, { backgroundColor: palette.primary[100] }]}>
+                <Text style={[styles.weekBadgeText, { color: palette.primary[700] }]}>
+                  Week {selectedWeek}
+                </Text>
+              </View>
+            </View>
+            <Ionicons
+              name="chevron-down"
+              size={20}
+              color={colors.textSecondary}
+            />
+          </Pressable>
+
           {/* Week Timetable */}
-          <WeekTimetable 
+          <WeekTimetable
             timetable={mockWeekTimetable}
             currentDay={currentDayName}
           />
         </SafeAreaView>
+      </Modal>
+
+      {/* Week Dropdown Modal */}
+      <Modal
+        visible={weekDropdownVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setWeekDropdownVisible(false)}
+      >
+        <Pressable
+          style={styles.dropdownOverlay}
+          onPress={() => setWeekDropdownVisible(false)}
+        >
+          <View style={[styles.dropdownContainer, { backgroundColor: colors.surface }]}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {weekOptions.map((option) => (
+                <Pressable
+                  key={option.week}
+                  onPress={() => {
+                    setSelectedWeek(option.week);
+                    setWeekDropdownVisible(false);
+                  }}
+                  style={({ pressed }) => [
+                    styles.dropdownItem,
+                    {
+                      backgroundColor: selectedWeek === option.week
+                        ? palette.primary[50]
+                        : pressed
+                        ? colors.surfaceSecondary
+                        : colors.surface,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.dropdownItemText,
+                      {
+                        color: selectedWeek === option.week ? palette.primary[700] : colors.text,
+                        fontWeight: selectedWeek === option.week ? '600' : '400',
+                      },
+                    ]}
+                  >
+                    {option.label.split(': ')[1]} <Text style={{ fontWeight: '600' }}>[Week {option.week}]</Text>
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </Pressable>
       </Modal>
     </SafeAreaView>
   );
@@ -305,7 +384,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: spacing.md,
     borderRadius: borderRadius.xl,
-    borderWidth: 1,
+    borderWidth: 2,
   },
   timetableButtonText: {
     fontSize: typography.size.base,
@@ -332,5 +411,55 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: typography.size.lg,
     fontWeight: '600',
+  },
+  weekSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+  },
+  weekLabelContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  weekDateLabel: {
+    fontSize: typography.size.base,
+    fontWeight: '400',
+  },
+  weekBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: borderRadius.sm,
+  },
+  weekBadgeText: {
+    fontSize: typography.size.xs,
+    fontWeight: '600',
+  },
+  dropdownOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.base,
+  },
+  dropdownContainer: {
+    width: '100%',
+    maxWidth: 400,
+    maxHeight: '70%',
+    borderRadius: borderRadius.lg,
+    overflow: 'hidden',
+  },
+  dropdownItem: {
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: palette.neutral[100],
+  },
+  dropdownItemText: {
+    fontSize: typography.size.base,
   },
 });

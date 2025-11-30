@@ -56,7 +56,6 @@ export default function NextActivityCard({
         styles.container,
         {
           backgroundColor: colors.surface,
-          borderLeftColor: accentColor,
         },
       ]}
     >
@@ -156,7 +155,6 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: spacing.base,
     padding: spacing.base,
-    borderLeftWidth: 4,
   },
   time: {
     fontSize: typography.size.lg,

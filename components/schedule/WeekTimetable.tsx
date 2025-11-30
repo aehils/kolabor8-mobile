@@ -11,7 +11,8 @@ interface WeekTimetableProps {
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const START_HOUR = 8;
 const END_HOUR = 18;
-const HOUR_HEIGHT = 60;
+const HOUR_WIDTH = 80;
+const ROW_HEIGHT = 60;
 
 export default function WeekTimetable({ timetable, currentDay }: WeekTimetableProps) {
   const colorScheme = useColorScheme() ?? 'light';
@@ -29,99 +30,149 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
   };
 
   const getSlotStyle = (slot: TimetableSlot) => {
-    const top = (slot.startHour - START_HOUR) * HOUR_HEIGHT;
-    const height = slot.duration * HOUR_HEIGHT - 4;
-    return { top, height };
+    const left = (slot.startHour - START_HOUR) * HOUR_WIDTH;
+    const width = slot.duration * HOUR_WIDTH - 4;
+    return { left, width };
+  };
+
+  // Detect conflicts (overlapping time slots) for a given day
+  const getConflicts = (day: string) => {
+    const slots = timetable[day] || [];
+    const conflicts: string[] = [];
+
+    for (let i = 0; i < slots.length; i++) {
+      for (let j = i + 1; j < slots.length; j++) {
+        const slot1 = slots[i];
+        const slot2 = slots[j];
+        const end1 = slot1.startHour + slot1.duration;
+        const end2 = slot2.startHour + slot2.duration;
+
+        // Check if they overlap
+        if (
+          (slot1.startHour < end2 && end1 > slot2.startHour) ||
+          (slot2.startHour < end1 && end2 > slot1.startHour)
+        ) {
+          if (!conflicts.includes(slot1.id)) conflicts.push(slot1.id);
+          if (!conflicts.includes(slot2.id)) conflicts.push(slot2.id);
+        }
+      }
+    }
+
+    return conflicts;
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       style={styles.container}
-      showsVerticalScrollIndicator={false}
+      horizontal
+      showsHorizontalScrollIndicator={true}
     >
       <View style={styles.grid}>
-        {/* Header Row */}
+        {/* Header Row with Time Slots */}
         <View style={styles.headerRow}>
-          <View style={styles.timeColumn} />
-          {DAYS.map((day) => (
-            <View 
-              key={day} 
+          <View style={styles.dayColumn} />
+          {hours.map((hour) => (
+            <View
+              key={hour}
               style={[
-                styles.dayHeader,
-                currentDay === day && { backgroundColor: palette.primary[50] }
+                styles.timeHeader,
+                { width: HOUR_WIDTH, borderLeftColor: colors.border }
               ]}
             >
-              <Text style={[
-                styles.dayText,
-                { color: currentDay === day ? palette.primary[500] : colors.text }
-              ]}>
-                {day}
+              <Text style={[styles.timeText, { color: colors.textSecondary }]}>
+                {formatHour(hour)}
               </Text>
             </View>
           ))}
         </View>
 
-        {/* Time Grid */}
-        <View style={styles.gridBody}>
-          {/* Time Labels */}
-          <View style={styles.timeColumn}>
-            {hours.map((hour) => (
-              <View key={hour} style={[styles.timeCell, { height: HOUR_HEIGHT }]}>
-                <Text style={[styles.timeText, { color: colors.textSecondary }]}>
-                  {formatHour(hour)}
+        {/* Day Rows */}
+        {DAYS.map((day) => {
+          const conflicts = getConflicts(day);
+
+          return (
+            <View key={day} style={styles.dayRow}>
+              {/* Day Label */}
+              <View
+                style={[
+                  styles.dayLabel,
+                  {
+                    backgroundColor: currentDay === day ? palette.primary[50] : colors.surface,
+                    borderTopColor: colors.border,
+                    borderRightColor: colors.border,
+                  }
+                ]}
+              >
+                <Text style={[
+                  styles.dayText,
+                  { color: currentDay === day ? palette.primary[500] : colors.text }
+                ]}>
+                  {day}
                 </Text>
               </View>
-            ))}
-          </View>
 
-          {/* Day Columns */}
-          {DAYS.map((day) => (
-            <View 
-              key={day} 
-              style={[
-                styles.dayColumn,
-                { borderLeftColor: colors.border },
-                currentDay === day && { backgroundColor: palette.primary[50] + '30' }
-              ]}
-            >
-              {/* Hour lines */}
-              {hours.map((hour) => (
-                <View 
-                  key={hour} 
-                  style={[
-                    styles.hourLine, 
-                    { 
-                      height: HOUR_HEIGHT,
-                      borderBottomColor: colors.border,
-                    }
-                  ]} 
-                />
-              ))}
-
-              {/* Activity Blocks */}
-              {timetable[day]?.map((slot) => {
-                const position = getSlotStyle(slot);
-                return (
+              {/* Time Cells */}
+              <View style={styles.timeCellsContainer}>
+                {hours.map((hour) => (
                   <View
-                    key={slot.id}
+                    key={hour}
                     style={[
-                      styles.activityBlock,
+                      styles.timeCell,
                       {
-                        backgroundColor: slot.color,
-                        top: position.top,
-                        height: position.height,
+                        width: HOUR_WIDTH,
+                        height: ROW_HEIGHT,
+                        borderTopColor: colors.border,
+                        borderLeftColor: colors.border,
+                        backgroundColor: currentDay === day ? palette.primary[50] + '20' : colors.surface,
                       }
                     ]}
-                  >
-                    <Text style={styles.blockText} numberOfLines={2}>
-                      {slot.courseCode}
-                    </Text>
-                  </View>
-                );
-              })}
+                  />
+                ))}
+
+                {/* Activity Blocks */}
+                {timetable[day]?.map((slot) => {
+                  const position = getSlotStyle(slot);
+                  const hasConflict = conflicts.includes(slot.id);
+
+                  return (
+                    <View
+                      key={slot.id}
+                      style={[
+                        styles.activityBlock,
+                        {
+                          backgroundColor: palette.neutral[200],
+                          borderColor: colors.border,
+                          left: position.left,
+                          width: position.width,
+                        }
+                      ]}
+                    >
+                      {hasConflict && (
+                        <View style={styles.hatchOverlay} pointerEvents="none">
+                          {Array.from({ length: 20 }).map((_, i) => (
+                            <View
+                              key={i}
+                              style={[
+                                styles.hatchLine,
+                                {
+                                  backgroundColor: palette.neutral[400],
+                                  left: i * 8,
+                                }
+                              ]}
+                            />
+                          ))}
+                        </View>
+                      )}
+                      <Text style={[styles.blockText, { color: colors.text }]} numberOfLines={2}>
+                        {slot.courseCode}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
             </View>
-          ))}
-        </View>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -139,49 +190,69 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: palette.neutral[200],
   },
-  timeColumn: {
-    width: 50,
+  dayColumn: {
+    width: 60,
   },
-  dayHeader: {
-    flex: 1,
+  timeHeader: {
     paddingVertical: spacing.sm,
     alignItems: 'center',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+  },
+  timeText: {
+    fontSize: typography.size.xs,
+    fontWeight: '600',
+  },
+  dayRow: {
+    flexDirection: 'row',
+    position: 'relative',
+  },
+  dayLabel: {
+    width: 60,
+    height: ROW_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    borderRightWidth: 1,
   },
   dayText: {
     fontSize: typography.size.sm,
     fontWeight: '600',
   },
-  gridBody: {
+  timeCellsContainer: {
     flexDirection: 'row',
+    position: 'relative',
   },
   timeCell: {
-    justifyContent: 'flex-start',
-    paddingTop: 2,
-    paddingRight: spacing.xs,
-  },
-  timeText: {
-    fontSize: typography.size.xs,
-    textAlign: 'right',
-  },
-  dayColumn: {
-    flex: 1,
-    position: 'relative',
+    borderTopWidth: 1,
     borderLeftWidth: 1,
-  },
-  hourLine: {
-    borderBottomWidth: 1,
   },
   activityBlock: {
     position: 'absolute',
-    left: 2,
-    right: 2,
+    top: 4,
+    bottom: 4,
     borderRadius: borderRadius.sm,
     padding: spacing.xs,
     overflow: 'hidden',
+    borderWidth: 1,
   },
   blockText: {
     fontSize: typography.size.xs,
     fontWeight: '600',
-    color: palette.neutral[0],
+  },
+  hatchOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'hidden',
+  },
+  hatchLine: {
+    position: 'absolute',
+    top: -50,
+    bottom: -50,
+    width: 2,
+    transform: [{ rotate: '45deg' }],
   },
 });

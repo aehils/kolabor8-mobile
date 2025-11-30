@@ -34,10 +34,11 @@ import {
 export default function ScheduleScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
-  
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPrevious, setShowPrevious] = useState(false);
   const [timetableModalVisible, setTimetableModalVisible] = useState(false);
+  const [selectedWeek, setSelectedWeek] = useState(3); // Week 3 as default
 
   // Get activities for selected date
   const activities = useMemo(() => {
@@ -114,6 +115,23 @@ export default function ScheduleScreen() {
   // Get current day for timetable highlight
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const currentDayName = dayNames[new Date().getDay()];
+
+  // Generate week options (e.g., Week 1 through Week 12)
+  const weekOptions = Array.from({ length: 12 }, (_, i) => {
+    const weekNumber = i + 1;
+    // Calculate the start date for each week (for demo purposes)
+    const startDate = new Date(2025, 9, 2); // October 2, 2025
+    startDate.setDate(startDate.getDate() + (i * 7));
+    const dateString = startDate.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+    return {
+      week: weekNumber,
+      label: `Week ${weekNumber}: ${dateString}`,
+    };
+  });
 
   return (
     <SafeAreaView 
@@ -205,12 +223,12 @@ export default function ScheduleScreen() {
           onPress={() => setTimetableModalVisible(true)}
           style={({ pressed }) => [
             styles.timetableButton,
-            { 
+            {
               backgroundColor: colors.surface,
-              borderColor: colors.border,
+              borderColor: palette.primary[500],
               opacity: pressed ? 0.9 : 1,
             },
-            shadows.sm,
+            shadows.lg,
           ]}
         >
           <Ionicons name="calendar" size={20} color={palette.primary[500]} />
@@ -242,8 +260,39 @@ export default function ScheduleScreen() {
             <View style={styles.modalBackButton} />
           </View>
 
+          {/* Week Selector */}
+          <View style={[styles.weekSelector, { borderBottomColor: colors.border }]}>
+            <Pressable
+              onPress={() => setSelectedWeek(Math.max(1, selectedWeek - 1))}
+              style={styles.weekArrow}
+              disabled={selectedWeek === 1}
+            >
+              <Ionicons
+                name="chevron-back"
+                size={24}
+                color={selectedWeek === 1 ? colors.textSecondary : palette.primary[500]}
+              />
+            </Pressable>
+            <View style={styles.weekLabelContainer}>
+              <Text style={[styles.weekLabel, { color: colors.text }]}>
+                {weekOptions[selectedWeek - 1]?.label || 'Week 1'}
+              </Text>
+            </View>
+            <Pressable
+              onPress={() => setSelectedWeek(Math.min(12, selectedWeek + 1))}
+              style={styles.weekArrow}
+              disabled={selectedWeek === 12}
+            >
+              <Ionicons
+                name="chevron-forward"
+                size={24}
+                color={selectedWeek === 12 ? colors.textSecondary : palette.primary[500]}
+              />
+            </Pressable>
+          </View>
+
           {/* Week Timetable */}
-          <WeekTimetable 
+          <WeekTimetable
             timetable={mockWeekTimetable}
             currentDay={currentDayName}
           />
@@ -294,7 +343,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: spacing.md,
     borderRadius: borderRadius.xl,
-    borderWidth: 1,
+    borderWidth: 2,
   },
   timetableButtonText: {
     fontSize: typography.size.base,
@@ -320,6 +369,28 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: typography.size.lg,
+    fontWeight: '600',
+  },
+  weekSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.base,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+  },
+  weekArrow: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  weekLabelContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  weekLabel: {
+    fontSize: typography.size.base,
     fontWeight: '600',
   },
 });

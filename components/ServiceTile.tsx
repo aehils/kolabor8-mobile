@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
 
   standardTile: {
     flex: 1,
-    minHeight: 125,
+    minHeight: 160,
   },
   
   standardTileWrapper: {
@@ -305,7 +305,9 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.lg,
     marginBottom: spacing.lg,
     position: 'absolute',
-    top: '30%',
+    top: '35%',
+    left: '50%',
+    marginLeft: -24, // Half of width to center
   },
   
   textContainer: {
@@ -341,17 +343,19 @@ const styles = StyleSheet.create({
     fontSize: typography.size.sm,
     color: palette.neutral[500],
     lineHeight: typography.size.sm * 1.6,
+    textAlign: 'center',
   },
   
   featuredDescription: {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: typography.size.base,
+    textAlign: 'left',
   },
 
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: borderRadius.full,

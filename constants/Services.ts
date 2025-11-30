@@ -62,7 +62,7 @@ export const services: Service[] = [
   {
     id: SERVICE_IDS.ATTENDANCE,
     name: 'Attendance Check-in',
-    description: 'Mark your daily attendance',
+    description: 'Mark your attendance',
     icon: 'checkmark-circle',
     type: 'featured',
     route: '/attendance',
@@ -72,7 +72,7 @@ export const services: Service[] = [
     name: 'Campus Map',
     description: 'Navigate the campus',
     icon: 'location',
-    type: 'double-height',
+    type: 'standard',
     route: '/map',
   },
   {
@@ -109,6 +109,8 @@ export const services: Service[] = [
     description: 'Help desk & support',
     icon: 'laptop-outline',
     type: 'standard',
+    hasStatus: true,
+    statusType: 'hours',
     route: '/it-services',
   },
   {
@@ -152,6 +154,10 @@ export const mockServiceStatus: ServiceStatusMap = {
   [SERVICE_IDS.HEALTH]: {
     isOpen: true,
     closingTime: '5:00 PM',
+  } as HoursStatus,
+  [SERVICE_IDS.IT_SERVICES]: {
+    isOpen: true,
+    closingTime: '6:00 PM',
   } as HoursStatus,
 };
 

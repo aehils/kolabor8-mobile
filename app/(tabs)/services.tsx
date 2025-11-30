@@ -46,23 +46,14 @@ export default function ServicesScreen() {
   
   // Get the featured service (Attendance)
   const featuredService = services.find(s => s.type === 'featured');
-  
-  // Get the double-height service (Campus Map)
-  const doubleHeightService = services.find(s => s.type === 'double-height');
-  
+
   // Get standard services for the grid
   const standardServices = services.filter(s => s.type === 'standard');
-  
-  // Get first two standard services for the double-height row
-  const firstTwoStandard = standardServices.slice(0, 2);
-  
-  // Get remaining standard services
-  const remainingServices = standardServices.slice(2);
-  
-  // Create pairs for the remaining grid
-  const remainingRows: Service[][] = [];
-  for (let i = 0; i < remainingServices.length; i += 2) {
-    remainingRows.push(remainingServices.slice(i, i + 2));
+
+  // Create pairs for the grid (2 columns)
+  const serviceRows: Service[][] = [];
+  for (let i = 0; i < standardServices.length; i += 2) {
+    serviceRows.push(standardServices.slice(i, i + 2));
   }
   
   return (
@@ -99,41 +90,9 @@ export default function ServicesScreen() {
               />
             </View>
           )}
-          
-          {/* Double-height + Two Standard Services Row */}
-          <View style={styles.doubleHeightRow}>
-            {/* Campus Map - Double Height */}
-            {doubleHeightService && (
-              <ServiceTile
-                service={doubleHeightService}
-                status={statusData[doubleHeightService.id]}
-                onPress={handleServicePress}
-              />
-            )}
-            
-            {/* First two standard services stacked */}
-            <View style={styles.stackedServices}>
-              {firstTwoStandard.map((service, index) => (
-                <View 
-                  key={service.id} 
-                  style={[
-                    styles.stackedTile,
-                    index === 0 && styles.stackedTileFirst,
-                    index === 1 && styles.stackedTileLast,
-                  ]}
-                >
-                  <ServiceTile
-                    service={service}
-                    status={statusData[service.id]}
-                    onPress={handleServicePress}
-                  />
-                </View>
-              ))}
-            </View>
-          </View>
-          
-          {/* Remaining Standard Services Grid */}
-          {remainingRows.map((row, rowIndex) => (
+
+          {/* Standard Services Grid (2 columns) */}
+          {serviceRows.map((row, rowIndex) => (
             <View key={`row-${rowIndex}`} style={styles.gridRow}>
               {row.map((service, index) => (
                 <ServiceTile
@@ -175,29 +134,7 @@ const styles = StyleSheet.create({
   featuredRow: {
     marginBottom: spacing.base,
   },
-  
-  doubleHeightRow: {
-    flexDirection: 'row',
-    marginBottom: spacing.base,
-  },
-  
-  stackedServices: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  
-  stackedTile: {
-    flex: 1,
-  },
-  
-  stackedTileFirst: {
-    marginBottom: spacing.sm / 2,
-  },
-  
-  stackedTileLast: {
-    marginTop: spacing.sm / 2,
-  },
-  
+
   gridRow: {
     flexDirection: 'row',
     marginBottom: spacing.base,

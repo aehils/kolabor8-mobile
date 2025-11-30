@@ -207,7 +207,6 @@ export default function ServiceTile({
           {/* Text Content */}
           <View style={[
             styles.textContainer,
-            service.type === 'featured' && styles.featuredTextContainer,
             service.type === 'standard' && styles.standardTextContainer,
           ]}>
             <Text style={[
@@ -271,9 +270,8 @@ const styles = StyleSheet.create({
   },
 
   featuredContent: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     padding: spacing.lg,
   },
 
@@ -297,7 +295,8 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: borderRadius.xl,
-    marginBottom: spacing.base,
+    marginBottom: 0,
+    marginRight: spacing.base,
   },
 
   standardIconContainer: {
@@ -313,10 +312,6 @@ const styles = StyleSheet.create({
   
   textContainer: {
     flex: 1,
-  },
-
-  featuredTextContainer: {
-    alignItems: 'center',
   },
 
   standardTextContainer: {
@@ -338,7 +333,6 @@ const styles = StyleSheet.create({
     fontSize: typography.size.xl,
     color: palette.neutral[0],
     fontWeight: '700',
-    textAlign: 'center',
   },
 
   standardName: {
@@ -355,7 +349,6 @@ const styles = StyleSheet.create({
   featuredDescription: {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: typography.size.base,
-    textAlign: 'center',
   },
 
   statusBadge: {

@@ -97,16 +97,16 @@ export const palette = {
 // Theme colors
 const Colors = {
   light: {
-    text: palette.forest[900],
-    textSecondary: palette.forest[600],
-    background: palette.forest[50],      // Light forest green background
-    surface: palette.neutral[0],         // White surfaces
-    surfaceSecondary: palette.forest[100], // Slightly darker forest tint
-    tint: palette.sage[500],             // Sage green for interactive elements
-    tabIconDefault: palette.forest[400],
-    tabIconSelected: palette.sage[500],  // Sage for selected tabs
+    text: palette.neutral[900],
+    textSecondary: palette.neutral[600],
+    background: palette.forest[100],     // Forest green tinted background
+    surface: palette.neutral[0],         // White surfaces for cards
+    surfaceSecondary: palette.forest[50], // Very light forest tint
+    tint: palette.sage[500],             // Sage for all interactive elements
+    tabIconDefault: palette.neutral[400],
+    tabIconSelected: palette.sage[600],  // Sage for selected tabs
     border: palette.forest[200],
-    accent: palette.gold[500],           // Gold accents
+    accent: palette.gold[500],           // Gold for accents and highlights
 
     // Semantic
     success: palette.success.main,
@@ -119,15 +119,15 @@ const Colors = {
     infoLight: palette.info.light,
   },
   dark: {
-    text: palette.neutral[50],
-    textSecondary: palette.forest[200],
-    background: palette.forest[900],     // Dark forest green background
-    surface: palette.forest[800],        // Slightly lighter forest surface
+    text: palette.neutral[0],
+    textSecondary: palette.neutral[400],
+    background: palette.forest[900],     // Deep forest green background
+    surface: palette.forest[800],        // Forest green surfaces
     surfaceSecondary: palette.forest[700],
-    tint: palette.sage[400],             // Lighter sage for dark mode
-    tabIconDefault: palette.forest[400],
-    tabIconSelected: palette.gold[400],  // Gold for selected tabs in dark mode
-    border: palette.forest[700],
+    tint: palette.sage[400],             // Sage for interactive elements
+    tabIconDefault: palette.neutral[500],
+    tabIconSelected: palette.gold[400],  // Gold for selected items
+    border: palette.forest[600],
     accent: palette.gold[400],           // Gold accents
 
     // Semantic

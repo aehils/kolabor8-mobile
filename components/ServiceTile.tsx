@@ -265,7 +265,9 @@ const styles = StyleSheet.create({
   
   featuredTile: {
     backgroundColor: palette.forest[600],
-    minHeight: 120,
+    minHeight: 140,
+    borderWidth: 2,
+    borderColor: palette.gold[400],
   },
 
   standardTile: {
@@ -362,13 +364,14 @@ const styles = StyleSheet.create({
   
   description: {
     fontSize: typography.size.sm,
-    color: palette.neutral[500],
+    color: palette.neutral[0],
+    opacity: 0.9,
     lineHeight: typography.size.sm * 1.6,
     textAlign: 'center',
   },
-  
+
   featuredDescription: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255, 255, 255, 0.95)',
     fontSize: typography.size.base,
     textAlign: 'left',
   },

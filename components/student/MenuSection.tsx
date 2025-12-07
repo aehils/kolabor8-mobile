@@ -35,11 +35,11 @@ function MenuItemRow({ item, onPress, isFirst, isLast }: MenuItemRowProps) {
           { opacity: pressed ? 0.7 : 1 }
         ]}
       >
-        <View style={[styles.menuIconContainer, { backgroundColor: palette.primary[50] }]}>
-          <Ionicons 
-            name={item.icon as any} 
-            size={20} 
-            color={palette.primary[500]} 
+        <View style={styles.menuIconContainer}>
+          <Ionicons
+            name={item.icon as any}
+            size={22}
+            color={palette.sage[500]}
           />
         </View>
         
@@ -124,9 +124,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.base,
   },
   menuIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: borderRadius.md,
+    width: 32,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.md,

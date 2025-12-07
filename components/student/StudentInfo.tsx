@@ -31,8 +31,8 @@ function InfoRow({ icon, label, value, onPress, actionIcon }: InfoRowProps) {
 
   const content = (
     <View style={styles.infoRow}>
-      <View style={[styles.iconContainer, { backgroundColor: palette.sage[100] }]}>
-        <Ionicons name={icon} size={18} color={palette.sage[500]} />
+      <View style={styles.iconContainer}>
+        <Ionicons name={icon} size={20} color={palette.sage[500]} />
       </View>
       <View style={styles.infoContent}>
         <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>{label}</Text>
@@ -119,9 +119,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   iconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: borderRadius.md,
+    width: 32,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.md,

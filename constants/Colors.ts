@@ -97,26 +97,26 @@ export const palette = {
 // Theme colors
 const Colors = {
   light: {
-    text: palette.neutral[900],
-    textSecondary: palette.neutral[600],
-    background: palette.forest[100],     // Forest green tinted background
-    surface: palette.neutral[0],         // White surfaces for cards
-    surfaceSecondary: palette.forest[50], // Very light forest tint
-    tint: palette.sage[500],             // Sage for all interactive elements
+    text: palette.neutral[0],            // White text on dark background
+    textSecondary: palette.neutral[300],
+    background: palette.forest[500],     // Deep forest green background (#09563C)
+    surface: palette.forest[600],        // Slightly darker forest for cards
+    surfaceSecondary: palette.forest[700],
+    tint: palette.sage[300],             // Lighter sage for visibility on dark bg
     tabIconDefault: palette.neutral[400],
-    tabIconSelected: palette.sage[600],  // Sage for selected tabs
-    border: palette.forest[200],
-    accent: palette.gold[500],           // Gold for accents and highlights
+    tabIconSelected: palette.gold[400],  // Gold for selected tabs
+    border: palette.forest[400],
+    accent: palette.gold[400],           // Gold accents
 
     // Semantic
     success: palette.success.main,
-    successLight: palette.success.light,
+    successLight: palette.forest[600],
     warning: palette.warning.main,
-    warningLight: palette.warning.light,
+    warningLight: palette.forest[600],
     error: palette.error.main,
-    errorLight: palette.error.light,
+    errorLight: palette.forest[600],
     info: palette.info.main,
-    infoLight: palette.info.light,
+    infoLight: palette.forest[600],
   },
   dark: {
     text: palette.neutral[0],

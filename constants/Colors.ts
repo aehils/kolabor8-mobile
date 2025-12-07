@@ -8,18 +8,46 @@
 
 // Core palette
 export const palette = {
-  // Primary - Forest Green & Gold
-  primary: {
-    50: '#F0F4F2',
-    100: '#E1EAE5',
-    200: '#C3D5CB',
-    300: '#C3A95E',  // Gold accent
-    400: '#9FA76A',
-    500: '#878D52',  // Sage green
-    600: '#5C7447',
-    700: '#09563C',  // Forest green
-    800: '#074132',
-    900: '#052D23',
+  // Forest - Dark green for backgrounds (#09563C)
+  forest: {
+    50: '#EEF3F1',
+    100: '#D4E4DD',
+    200: '#AACABF',
+    300: '#6D9D8A',
+    400: '#3E7661',
+    500: '#09563C',  // Base forest green
+    600: '#074836',
+    700: '#053A2D',
+    800: '#042D23',
+    900: '#02201A',
+  },
+
+  // Sage - Medium green for foreground/interactive (#878D52)
+  sage: {
+    50: '#F4F5EF',
+    100: '#E7E9DC',
+    200: '#D0D3BA',
+    300: '#B8BD97',
+    400: '#9FA575',
+    500: '#878D52',  // Base sage green
+    600: '#6C7142',
+    700: '#525632',
+    800: '#3A3D24',
+    900: '#252718',
+  },
+
+  // Gold - Sand/gold for accents (#C3A95E)
+  gold: {
+    50: '#FAF7F0',
+    100: '#F4EDDC',
+    200: '#E9DABA',
+    300: '#DEC897',
+    400: '#D3B675',
+    500: '#C3A95E',  // Base gold
+    600: '#9C874B',
+    700: '#756538',
+    800: '#544829',
+    900: '#38301C',
   },
 
   // Neutral - Cool grays
@@ -64,16 +92,17 @@ export const palette = {
 // Theme colors
 const Colors = {
   light: {
-    text: palette.neutral[900],
-    textSecondary: palette.neutral[500],
-    background: palette.neutral[50],
-    surface: palette.neutral[0],
-    surfaceSecondary: palette.neutral[100],
-    tint: palette.primary[500],
-    tabIconDefault: palette.neutral[400],
-    tabIconSelected: palette.primary[500],
-    border: palette.neutral[200],
-    
+    text: palette.forest[900],
+    textSecondary: palette.forest[600],
+    background: palette.forest[50],      // Light forest green background
+    surface: palette.neutral[0],         // White surfaces
+    surfaceSecondary: palette.forest[100], // Slightly darker forest tint
+    tint: palette.sage[500],             // Sage green for interactive elements
+    tabIconDefault: palette.forest[400],
+    tabIconSelected: palette.sage[500],  // Sage for selected tabs
+    border: palette.forest[200],
+    accent: palette.gold[500],           // Gold accents
+
     // Semantic
     success: palette.success.main,
     successLight: palette.success.light,
@@ -86,24 +115,25 @@ const Colors = {
   },
   dark: {
     text: palette.neutral[50],
-    textSecondary: palette.neutral[400],
-    background: palette.neutral[900],
-    surface: palette.neutral[800],
-    surfaceSecondary: palette.neutral[700],
-    tint: palette.primary[400],
-    tabIconDefault: palette.neutral[500],
-    tabIconSelected: palette.primary[400],
-    border: palette.neutral[700],
-    
+    textSecondary: palette.forest[200],
+    background: palette.forest[900],     // Dark forest green background
+    surface: palette.forest[800],        // Slightly lighter forest surface
+    surfaceSecondary: palette.forest[700],
+    tint: palette.sage[400],             // Lighter sage for dark mode
+    tabIconDefault: palette.forest[400],
+    tabIconSelected: palette.gold[400],  // Gold for selected tabs in dark mode
+    border: palette.forest[700],
+    accent: palette.gold[400],           // Gold accents
+
     // Semantic
     success: palette.success.main,
-    successLight: palette.neutral[800],
+    successLight: palette.forest[800],
     warning: palette.warning.main,
-    warningLight: palette.neutral[800],
+    warningLight: palette.forest[800],
     error: palette.error.main,
-    errorLight: palette.neutral[800],
+    errorLight: palette.forest[800],
     info: palette.info.main,
-    infoLight: palette.neutral[800],
+    infoLight: palette.forest[800],
   },
 };
 
@@ -152,21 +182,21 @@ export const typography = {
 // Shadows
 export const shadows = {
   sm: {
-    shadowColor: '#1A1917',
+    shadowColor: '#02201A',  // Dark forest green
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 3,
     elevation: 1,
   },
   md: {
-    shadowColor: '#1A1917',
+    shadowColor: '#02201A',  // Dark forest green
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
     elevation: 3,
   },
   lg: {
-    shadowColor: '#1A1917',
+    shadowColor: '#02201A',  // Dark forest green
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 16,

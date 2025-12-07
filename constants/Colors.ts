@@ -50,6 +50,11 @@ export const palette = {
     900: '#38301C',
   },
 
+  // Primary - Alias for sage (backwards compatibility)
+  get primary() {
+    return this.sage;
+  },
+
   // Neutral - Cool grays
   neutral: {
     0: '#FFFFFF',

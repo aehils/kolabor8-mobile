@@ -157,13 +157,6 @@ export default function ServiceTile({
     return palette.sage[500];
   };
 
-  const getIconBgColor = () => {
-    if (service.type === 'featured') {
-      return 'rgba(255, 255, 255, 0.15)';
-    }
-    return palette.sage[100];
-  };
-
   const shouldShowDescription = () => {
     // Always show description for featured tiles
     if (service.type === 'featured') return true;
@@ -216,11 +209,10 @@ export default function ServiceTile({
             styles.iconContainer,
             service.type === 'featured' && styles.featuredIconContainer,
             service.type === 'standard' && styles.standardIconContainer,
-            { backgroundColor: getIconBgColor() }
           ]}>
             <Ionicons
               name={service.icon as any}
-              size={service.type === 'featured' ? 28 : 24}
+              size={service.type === 'featured' ? 32 : 28}
               color={getIconColor()}
             />
           </View>
@@ -306,31 +298,21 @@ const styles = StyleSheet.create({
   },
   
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: borderRadius.lg,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.md,
   },
 
   featuredIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: borderRadius.xl,
     marginBottom: 0,
     marginRight: spacing.base,
   },
 
   standardIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: borderRadius.lg,
     marginBottom: spacing.lg,
     position: 'absolute',
     top: '25%',
-    left: '50%',
-    marginLeft: -24, // Half of width to center
+    alignSelf: 'center',
   },
   
   textContainer: {

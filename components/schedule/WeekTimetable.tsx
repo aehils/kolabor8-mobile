@@ -114,15 +114,15 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
               style={[
                 styles.dayLabel,
                 {
-                  backgroundColor: currentDay === day ? palette.primary[50] : colors.surface,
-                  borderTopColor: colors.border,
-                  borderRightColor: colors.border,
+                  backgroundColor: currentDay === day ? palette.forest[700] : colors.surface,
+                  borderTopColor: palette.forest[400],
+                  borderRightColor: palette.forest[400],
                 }
               ]}
             >
               <Text style={[
                 styles.dayText,
-                { color: currentDay === day ? palette.primary[500] : colors.text }
+                { color: currentDay === day ? palette.gold[300] : colors.text }
               ]}>
                 {day}
               </Text>
@@ -148,9 +148,9 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
                   <View style={styles.timeCellsContainer}>
                     {hours.map((hour) => {
                       const isOffPeak = hour < 9 || hour >= 17;
-                      const baseColor = currentDay === day ? palette.primary[50] + '20' : colors.surface;
+                      const baseColor = currentDay === day ? palette.forest[700] : colors.surface;
                       const backgroundColor = isOffPeak
-                        ? (colorScheme === 'dark' ? palette.neutral[800] : palette.neutral[100])
+                        ? palette.forest[800]
                         : baseColor;
 
                       return (
@@ -161,8 +161,8 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
                             {
                               width: HOUR_WIDTH,
                               height: ROW_HEIGHT,
-                              borderTopColor: colors.border,
-                              borderLeftColor: colors.border,
+                              borderTopColor: palette.forest[400],
+                              borderLeftColor: palette.forest[400],
                               backgroundColor,
                             }
                           ]}
@@ -181,8 +181,8 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
                           style={[
                             styles.activityBlock,
                             {
-                              backgroundColor: palette.neutral[200],
-                              borderColor: colors.border,
+                              backgroundColor: palette.sage[600],
+                              borderColor: palette.sage[400],
                               left: position.left,
                               width: position.width,
                             }
@@ -196,7 +196,7 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
                                   style={[
                                     styles.hatchLine,
                                     {
-                                      backgroundColor: palette.neutral[400],
+                                      backgroundColor: palette.gold[400],
                                       left: i * 8,
                                     }
                                   ]}
@@ -204,7 +204,7 @@ export default function WeekTimetable({ timetable, currentDay }: WeekTimetablePr
                               ))}
                             </View>
                           )}
-                          <Text style={[styles.blockText, { color: colors.text }]} numberOfLines={2}>
+                          <Text style={[styles.blockText, { color: palette.neutral[0] }]} numberOfLines={2}>
                             {slot.courseCode}
                           </Text>
                         </View>
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: palette.neutral[200],
+    borderBottomColor: palette.forest[400],
   },
   dayColumn: {
     width: 60,

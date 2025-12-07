@@ -39,7 +39,7 @@ function MenuItemRow({ item, onPress, isFirst, isLast }: MenuItemRowProps) {
           <Ionicons
             name={item.icon as any}
             size={22}
-            color={palette.sage[500]}
+            color={palette.sage[300]}
           />
         </View>
         

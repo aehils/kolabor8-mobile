@@ -152,9 +152,9 @@ export default function ServiceTile({
   
   const getIconColor = () => {
     if (service.type === 'featured') {
-      return palette.gold[400];
+      return palette.gold[300];
     }
-    return palette.sage[500];
+    return palette.sage[300];
   };
 
   const shouldShowDescription = () => {

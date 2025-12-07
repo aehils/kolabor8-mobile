@@ -22,7 +22,7 @@ const LightTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: palette.primary[500],
+    primary: palette.sage[500],
     background: Colors.light.background,
     card: Colors.light.surface,
     text: Colors.light.text,
@@ -34,7 +34,7 @@ const DarkAppTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    primary: palette.primary[400],
+    primary: palette.sage[400],
     background: Colors.dark.background,
     card: Colors.dark.surface,
     text: Colors.dark.text,

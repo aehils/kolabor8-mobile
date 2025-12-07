@@ -19,11 +19,11 @@ export default function PlaceholderScreen({
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.iconContainer, { backgroundColor: palette.primary[50] }]}>
-        <Ionicons 
-          name={icon as any} 
-          size={48} 
-          color={palette.primary[500]} 
+      <View style={[styles.iconContainer, { backgroundColor: palette.sage[100] }]}>
+        <Ionicons
+          name={icon as any}
+          size={48}
+          color={palette.sage[500]}
         />
       </View>
       <Text style={[styles.title, { color: colors.text }]}>{title}</Text>

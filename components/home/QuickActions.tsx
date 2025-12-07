@@ -34,13 +34,13 @@ function ActionButton({ icon, label, count, countLabel, onPress }: ActionButtonP
         }
       ]}
     >
-      <View style={[styles.iconContainer, { backgroundColor: palette.primary[50] }]}>
-        <Ionicons name={icon} size={22} color={palette.primary[500]} />
+      <View style={[styles.iconContainer, { backgroundColor: palette.sage[100] }]}>
+        <Ionicons name={icon} size={22} color={palette.sage[500]} />
       </View>
       <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
       {count > 0 && (
-        <View style={[styles.countBadge, { backgroundColor: palette.primary[100] }]}>
-          <Text style={[styles.countText, { color: palette.primary[600] }]}>
+        <View style={[styles.countBadge, { backgroundColor: palette.gold[100] }]}>
+          <Text style={[styles.countText, { color: palette.gold[700] }]}>
             {count} {countLabel}
           </Text>
         </View>

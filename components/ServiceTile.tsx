@@ -87,8 +87,8 @@ export default function ServiceTile({
         const countStatus = status as CountStatus;
         if (!countStatus.upcomingCount) return null;
         return (
-          <View style={[styles.statusBadge, { backgroundColor: palette.primary[100] }]}>
-            <Text style={[styles.statusText, { color: palette.primary[600] }]}>
+          <View style={[styles.statusBadge, { backgroundColor: palette.gold[100] }]}>
+            <Text style={[styles.statusText, { color: palette.gold[700] }]}>
               {countStatus.upcomingCount} this week
             </Text>
           </View>
@@ -152,16 +152,16 @@ export default function ServiceTile({
   
   const getIconColor = () => {
     if (service.type === 'featured') {
-      return palette.neutral[0];
+      return palette.gold[400];
     }
-    return palette.primary[500];
+    return palette.sage[500];
   };
-  
+
   const getIconBgColor = () => {
     if (service.type === 'featured') {
-      return 'rgba(255, 255, 255, 0.2)';
+      return 'rgba(255, 255, 255, 0.15)';
     }
-    return palette.primary[50];
+    return palette.sage[100];
   };
 
   const shouldShowDescription = () => {
@@ -203,10 +203,10 @@ export default function ServiceTile({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         style={tileStyles}
-        android_ripple={{ 
-          color: service.type === 'featured' 
-            ? 'rgba(255,255,255,0.2)' 
-            : palette.primary[100],
+        android_ripple={{
+          color: service.type === 'featured'
+            ? 'rgba(255,255,255,0.2)'
+            : palette.sage[100],
           borderless: false,
         }}
       >
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   },
   
   featuredTile: {
-    backgroundColor: palette.primary[500],
+    backgroundColor: palette.forest[600],
     minHeight: 120,
   },
 

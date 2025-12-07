@@ -47,8 +47,8 @@ export default function NextActivityCard({
   const accentColor = isInProgress
     ? palette.success.main
     : isUpcomingSoon
-      ? palette.warning.main
-      : palette.primary[500];
+      ? palette.gold[500]
+      : palette.sage[500];
 
   return (
     <View
@@ -140,7 +140,7 @@ export default function NextActivityCard({
         )}
         {activity.isVirtual && activity.meetingLink && (
           <Pressable
-            style={[styles.actionButton, { backgroundColor: palette.primary[500] }]}
+            style={[styles.actionButton, { backgroundColor: palette.sage[500] }]}
           >
             <Ionicons name="videocam-outline" size={16} color={palette.neutral[0]} />
             <Text style={[styles.actionText, { color: palette.neutral[0] }]}>Join</Text>

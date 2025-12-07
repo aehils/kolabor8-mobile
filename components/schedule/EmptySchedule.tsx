@@ -19,8 +19,8 @@ export default function EmptySchedule({
   return (
     <View style={styles.container}>
       <View style={styles.emptyContent}>
-        <View style={[styles.iconContainer, { backgroundColor: palette.primary[50] }]}>
-          <Ionicons name="calendar-outline" size={48} color={palette.primary[500]} />
+        <View style={[styles.iconContainer, { backgroundColor: palette.sage[100] }]}>
+          <Ionicons name="calendar-outline" size={48} color={palette.sage[500]} />
         </View>
 
         <Text style={[styles.title, { color: colors.text }]}>

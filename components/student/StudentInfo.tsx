@@ -31,8 +31,8 @@ function InfoRow({ icon, label, value, onPress, actionIcon }: InfoRowProps) {
 
   const content = (
     <View style={styles.infoRow}>
-      <View style={[styles.iconContainer, { backgroundColor: palette.primary[50] }]}>
-        <Ionicons name={icon} size={18} color={palette.primary[500]} />
+      <View style={[styles.iconContainer, { backgroundColor: palette.sage[100] }]}>
+        <Ionicons name={icon} size={18} color={palette.sage[500]} />
       </View>
       <View style={styles.infoContent}>
         <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>{label}</Text>

@@ -1,41 +1,41 @@
 /**
  * LMS Mobile App - Design System
- * 
- * Aesthetic Direction: "Academic Warmth"
- * A refined, warm palette with subtle depth that feels both professional 
- * and welcoming. Inspired by quality stationery and modern educational spaces.
+ *
+ * Aesthetic Direction: "Academic Heritage"
+ * A sophisticated palette inspired by the school's identity, combining
+ * forest greens with warm gold accents for a timeless, scholarly feel.
  */
 
 // Core palette
 export const palette = {
-  // Primary - Warm terracotta
+  // Primary - Forest Green & Gold
   primary: {
-    50: '#FEF7F4',
-    100: '#FCEEE8',
-    200: '#F9DDD1',
-    300: '#F4C4AD',
-    400: '#E89B74',
-    500: '#D97B4A',
-    600: '#C4612F',
-    700: '#A34D24',
-    800: '#7D3B1C',
-    900: '#5C2C15',
+    50: '#F0F4F2',
+    100: '#E1EAE5',
+    200: '#C3D5CB',
+    300: '#C3A95E',  // Gold accent
+    400: '#9FA76A',
+    500: '#878D52',  // Sage green
+    600: '#5C7447',
+    700: '#09563C',  // Forest green
+    800: '#074132',
+    900: '#052D23',
   },
-  
-  // Neutral - Warm grays
+
+  // Neutral - Cool grays
   neutral: {
     0: '#FFFFFF',
-    50: '#FAFAF9',
-    100: '#F5F4F2',
-    150: '#EDEBE8',
-    200: '#E4E2DE',
-    300: '#D4D1CB',
-    400: '#A8A49C',
-    500: '#7A756C',
-    600: '#5C5850',
-    700: '#3D3A35',
-    800: '#292723',
-    900: '#1A1917',
+    50: '#F8F9F8',
+    100: '#F1F2F1',
+    150: '#E8EAE8',
+    200: '#DFE1DF',
+    300: '#CED0CE',
+    400: '#A3A6A3',
+    500: '#757875',
+    600: '#595B59',
+    700: '#3B3D3B',
+    800: '#272827',
+    900: '#1A1A1A',
   },
   
   // Semantic
